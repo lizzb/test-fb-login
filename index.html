@@ -87,14 +87,24 @@
 </script>
 
 <!--
-  Below we include the Login Button social plugin. This button uses
-  the JavaScript SDK to present a graphical Login button that triggers
+  Below we include the Login Button social plugin.
+  This button uses the JavaScript SDK to present
+  a graphical Login button that triggers
   the FB.login() function when clicked.
 -->
 
 <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
 </fb:login-button>
 
+
+<!-- test facebook integration with like button
+https://developers.facebook.com/quickstarts/742522205838021/?platform=web -->
+<div
+  class="fb-like"
+  data-share="true"
+  data-width="450"
+  data-show-faces="true">
+</div>
 <div id="status">
 </div>
 
