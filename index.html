@@ -297,21 +297,18 @@ function getFBPhotos() {
   var i = 0;
 var list = document.getElementById('photos');
 
-  //var allPhotos = null;
-
-//FB.api('/me/photos', function(response) {
-//      console.log(response);
-//    });
-
 /* make the API call */
 var allPhotos = FB.api(
+
+  // this requires permission of user_photos
+        //which fb seems to be picky about
+        // like big red ugly flag like i'll do something illegal
+
     "/me/photos",
     function (response) {
       if (response && !response.error) {
         /* handle the result */
-        // this requires permission of user_photos
-        //which fb seems to be picky about
-        // like big red ugly flag like i'll do something illegal
+        
         //console.log(response);
         //allPhotos = response;
         console.log('allPhotos shoudl exist now maybe');
@@ -319,7 +316,7 @@ var allPhotos = FB.api(
     }
 );
 console.log(allPhotos);
-console.log(allPhotos.data);
+console.log(allPhotos['data']); // instead of .data
 
 // if its not equal to null and has a size
 // shoudl be array of photos
