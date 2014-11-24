@@ -86,6 +86,7 @@
       document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';
     });
+    getFBPhotos();
 
   }
 
@@ -99,54 +100,61 @@ function getFBPhotos() {
   /* make the API call */
   var allPhotos = FB.api(
 
-  // this requires permission of user_photos
-        //which fb seems to be picky about
-        // like big red ugly flag like i'll do something illegal
-
+    // this requires permission of user_photos
+    //which fb seems to be picky about
+    // like big red ugly flag like i'll do something illegal
     "/me/photos",
     function (response) {
       if (response && !response.error) {
         /* handle the result */
-        
-        console.log(response);
-        allPhotos = response;
+        //console.log(response);
+        //allPhotos = response;
         //console.log('allPhotos shoudl exist now maybe');
         console.log('allPhotos.data', allPhotos.data);
-console.log('allPhotos["data"]', allPhotos["data"]);
+        console.log('allPhotos["data"]', allPhotos["data"]);
 
-for(i = 0; i<5; i++) {
-
-  var item = allPhotos.data[i];
-
-
-
-  var o = document.createElement('img');
-  o.className="item";
-  //o.className='picture';
-  //o.src = item.thumbnail;
-//o.src = item.icon; // icon = the photo fb icon
-o.src = item.source;
-  //o.title = item.name;
-
-  // Append to the list
-  list.appendChild(o);
-  var p = document.createElement('div');
-  var content = document.createTextNode("date"+item.created_time);
-  p.appendChild(content);
-  p.className = "item";
-  list.appendChild(p);
-
-  /*var m = document.createElement('div');
-  m.className="item";
-  m.appendChild(content);
-  p.appendChild(o);
-  list.appendChild(m);*/
-
-}
+        // if (allPhotos)
+        // if its not equal to null and has a size
+// shoudl be array of photos 
 
 
 
-        //return response;
+
+  // sort descending by "created_time"
+  // which is when they were published
+  // in order to find most recent
+  allPhotos.sort(
+    function(a, b) { 
+      console.log("a.created_time", a.created_time, " b.created_time", b.created_time);
+      return b.created_time - a.created_time; 
+    });
+
+// right now risky cuz size may not be 5
+
+        for(i = 0; i<5; i++) {
+          var item = allPhotos.data[i];
+          var o = document.createElement('img');
+          o.className="item";
+          //o.className='picture';
+          //o.src = item.thumbnail;
+          //o.src = item.icon; // icon = the photo fb icon
+          o.src = item.source;
+          //o.title = item.name;
+
+          // Append to the list
+          list.appendChild(o);
+          var p = document.createElement('div');
+          var content = document.createTextNode("date"+item.created_time);
+          p.appendChild(content);
+          p.className = "item";
+          list.appendChild(p);
+
+          /*var m = document.createElement('div');
+          m.className="item";
+          m.appendChild(content);
+          p.appendChild(o);
+          list.appendChild(m);*/
+        }
       }
     }
 );
@@ -158,32 +166,9 @@ o.src = item.source;
 //console.log(allPhotos);
 //console.log(allPhotos['data']); // instead of .data
 
-// if its not equal to null and has a size
-// shoudl be array of photos 
-
-/*if (allPhotos) {
-  // sort descending by "created_time" which is when they were published
-  allPhotos.sort(
-  function(a, b) { 
-  console.log("a.created_time", a.created_time, " b.created_time", b.created_time);
-  return b.created_time - a.created_time; });
+//} end if allPhotos braces
 
 
-
-for(i = 0; i<5; i++) {
-
-  var item = allPhotos.data[i];
-
-  var o = document.createElement('img');
-  //o.className='picture';
-  o.src = item.thumbnail;
-  //o.title = item.name;
-
-  // Append to the list
-  list.appendChild(o);
-
-}
-}*/
 }
 
 </script>
@@ -195,7 +180,7 @@ for(i = 0; i<5; i++) {
   the FB.login() function when clicked.
 -->
 
-<fb:login-button scope="public_profile,email,user_photos" onlogin="checkLoginState();getFBPhotos();">
+<fb:login-button scope="public_profile,email,user_photos" onlogin="checkLoginState();">
 </fb:login-button>
 
 <div id="status">
@@ -205,14 +190,6 @@ for(i = 0; i<5; i++) {
 <button id="photobtn" onclick="getFBPhotos()">Get Photos from Facebook</button>
 
 
-<!-- test facebook integration with like button
-https://developers.facebook.com/quickstarts/742522205838021/?platform=web -->
-<!--div
-  class="fb-like"
-  data-share="true"
-  data-width="450"
-  data-show-faces="true">
-</div-->
 <div id="photos" class="masonry js-masonry"></div>
 
 
@@ -237,13 +214,13 @@ var msnry = new Masonry( container, {
 }
 
 .masonry .item {
-  width:  60px;
-  height: 60px;
+  /*width:  60px;
+  height: 60px;*/
   float: left;
   background: lightblue; /*#D26;*/
   border: 2px solid #333;
   border-color: hsla(0, 0%, 0%, 0.5);
-  border-radius: 5px;
+  /*border-radius: 5px;*/
 }
 </style>
 
