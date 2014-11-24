@@ -107,49 +107,83 @@ High-level steps to integrate Facebook Login into a web application:
   }
 
 
+function getPhotos() {
+  getFBPhotos(document.getElementById('numPhotos').value);
+}
 
-function getFBPhotos() {
+
+function getFBPhotos(N) {
 
   var i = 0;
   var list = document.getElementById('photos');
+  list.innerHTML = ""; // clear the div in case it had photos in it already
+
 
   /* make the API call */
-  var allPhotos = FB.api(
-
+  //var allPhotos = FB.api(
+    FB.api(
     // this requires permission of user_photos
     //which fb seems to be picky about
     // like big red ugly flag like i'll do something illegal
     //"/me/photos", // /uploaded
-    "/me/photos/uploaded",
-    function (response) {
-      if (response && !response.error) {
+    "/me/photos?limit="+N,
+    //"/me/photos/uploaded",
+    function (allPhotos) { //function (response) {
+      //console.log(response);
+      if (allPhotos && !allPhotos.error) { //if (response && !response.error) 
         /* handle the result */
         //console.log(response);
-        allPhotos = response;
+        //allPhotos = response;
         //console.log('allPhotos shoudl exist now maybe');
         //console.log('allPhotos.data', allPhotos.data);
-        console.log('allPhotos["data"]', allPhotos["data"]);
+        //console.log('allPhotos["data"]', allPhotos["data"]);
 
         // if (allPhotos)
         // if its not equal to null and has a size
 // shoudl be array of photos 
 
 
+  //if(allPhotos.data.length;)
 
-
+// https://developers.facebook.com/docs/graph-api/reference/v2.2/photo
+// backdated_time is when it was taken
+// but it doesnt always exist!! 
   // sort descending by "created_time"
   // which is when they were published
   // in order to find most recent
   allPhotos["data"].sort(
     function(a, b) { 
       //console.log("a.created_time.getTime()", a.created_time.getTime(), " b.created_time.getTime()", b.created_time.getTime());
-      return new Date(b.created_time).getTime() - new Date (a.created_time).getTime(); 
+      return new Date(b.created_time).getTime() - new Date(a.created_time).getTime(); 
     });
 
-// right now risky cuz size may not be 5
 
         for(i = 0; i<allPhotos.data.length; i++) {
-          var item = allPhotos.data[i];
+
+          var photo = allPhotos.data[i]; //pic
+
+          var imgDiv = document.createElement('div');
+          imgDiv.className="item";
+          var imgDate = new Date(photo.created_time); 
+          //(photo.back....
+          //var content = document.createTextNode(imgDate.toDateString());
+
+          imgDiv.innerHTML = imgDate.toDateString() + "<br>";
+           //imgDiv.style.backgroundImage = photo.source;
+          
+//imgDiv.width = photo.width / 4;
+
+          var pic = document.createElement('img');
+          pic.height = photo.height / 3;
+          
+          pic.src = photo.source;
+         
+          //imgDiv.appendChild(content);
+          imgDiv.appendChild(pic);
+          
+          list.appendChild(imgDiv);
+
+          /*var item = allPhotos.data[i];
           var o = document.createElement('img');
           o.className="item";
           //o.className='picture';
@@ -177,6 +211,7 @@ function getFBPhotos() {
         }
       }
     }
+
 );
 
 // allPhotos doesnt exist out heuhh
@@ -187,6 +222,7 @@ function getFBPhotos() {
 //console.log(allPhotos['data']); // instead of .data
 
 //} end if allPhotos braces
+//console.log("all photos at end", allPhotos);
 
 
 }
@@ -199,15 +235,15 @@ function getFBPhotos() {
   a graphical Login button that triggers
   the FB.login() function when clicked.
 -->
-
 <fb:login-button scope="public_profile,user_photos" onlogin="checkLoginState();">
 </fb:login-button>
 
-<div id="status">
-</div>
+<div id="status"></div>
+
+<input type="number" id="numPhotos" min="1" max="25" value="6">
 
 <!-- should only show this button if already logged in -->
-<button id="photobtn" onclick="getFBPhotos()">Get Photos from Facebook</button>
+<button id="photobtn" onclick="getPhotos()">Get Photos from Facebook</button>
 
 
 <div id="photos" class="masonry js-masonry"></div>
