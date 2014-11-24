@@ -311,9 +311,8 @@ var allPhotos = FB.api(
         
         console.log(response);
         allPhotos = response;
-        console.log('allPhotos shoudl exist now maybe');
-        console.log('allPhotos.data', allPhotos.data);
-        console.log('allPhotos["data"]', allPhotos["data"]);
+        //console.log('allPhotos shoudl exist now maybe');
+        
 
 
 
@@ -323,6 +322,11 @@ var allPhotos = FB.api(
       }
     }
 );
+
+
+console.log('allPhotos.data', allPhotos.data);
+console.log('allPhotos["data"]', allPhotos["data"]);
+
 /*console.log(allPhotos);
 console.log(allPhotos['data']); // instead of .data
 
