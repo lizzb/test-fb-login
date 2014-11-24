@@ -133,7 +133,7 @@ Works great. I used this to sort my object array by date. -> array.sort(function
   allPhotos["data"].sort(
     function(a, b) { 
       //console.log("a.created_time.getTime()", a.created_time.getTime(), " b.created_time.getTime()", b.created_time.getTime());
-      return new Date(a.created_time).getTime() - new Date (b.created_time).getTime(); 
+      return new Date(b.created_time).getTime() - new Date (a.created_time).getTime(); 
     });
 
 // right now risky cuz size may not be 5
@@ -152,7 +152,9 @@ Works great. I used this to sort my object array by date. -> array.sort(function
           // Append to the list
           list.appendChild(o);
           var p = document.createElement('div');
-          var content = document.createTextNode("date<br>"+item.created_time + "<br>alt<br>" + item.created_time);
+          var imgdate = new Date(item.created_time);
+          var content = document.createTextNode(""+imgdate.toDateString());
+          //var content = document.createTextNode("date<br>"+item.created_time + "<br>alt<br>" + item.created_time);
           p.appendChild(content);
           p.className = "item";
           list.appendChild(p);
