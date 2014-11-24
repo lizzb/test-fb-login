@@ -88,7 +88,7 @@
     //FB.api('/10154801035745507', function (response) {
     //console.log(JSON.stringify(response));
 
-    FB.api('/me/photos', function(response) {
+    FB.api('/user/photos', function(response) {
       console.log(response);
     });
 //});
@@ -263,7 +263,7 @@ function format(o){
   the FB.login() function when clicked.
 -->
 
-<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+<fb:login-button scope="public_profile,email,user_photos" onlogin="checkLoginState();">
 </fb:login-button>
 
 
