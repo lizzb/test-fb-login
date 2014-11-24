@@ -85,7 +85,138 @@
         'Thanks for logging in, ' + response.name + '!';
     });
 
-    //FB.api('/10154801035745507', function (response) {
+  }
+
+
+
+function getFBPhotos() {
+
+  var i = 0;
+  var list = document.getElementById('photos');
+
+  /* make the API call */
+  var allPhotos = FB.api(
+
+  // this requires permission of user_photos
+        //which fb seems to be picky about
+        // like big red ugly flag like i'll do something illegal
+
+    "/me/photos",
+    function (response) {
+      if (response && !response.error) {
+        /* handle the result */
+        
+        console.log(response);
+        allPhotos = response;
+        //console.log('allPhotos shoudl exist now maybe');
+        console.log('allPhotos.data', allPhotos.data);
+console.log('allPhotos["data"]', allPhotos["data"]);
+
+for(i = 0; i<5; i++) {
+
+  var item = allPhotos.data[i];
+
+  var o = document.createElement('img');
+  //o.className='picture';
+  //o.src = item.thumbnail;
+//o.src = item.icon; // icon = the photo fb icon
+o.src = item.source;
+  //o.title = item.name;
+
+  // Append to the list
+  list.appendChild(o);
+  var p = document.createElement('div');
+  var content = document.createTextNode("date"+item.created_time);
+  p.appendChild(content);
+  list.appendChild(p);
+
+}
+
+
+
+        //return response;
+      }
+    }
+);
+
+// allPhotos doesnt exist out heuhh
+//console.log('allPhotos.data', allPhotos.data);
+//console.log('allPhotos["data"]', allPhotos["data"]);
+
+//console.log(allPhotos);
+//console.log(allPhotos['data']); // instead of .data
+
+// if its not equal to null and has a size
+// shoudl be array of photos 
+
+/*if (allPhotos) {
+  // sort descending by "created_time" which is when they were published
+  allPhotos.sort(
+  function(a, b) { 
+  console.log("a.created_time", a.created_time, " b.created_time", b.created_time);
+  return b.created_time - a.created_time; });
+
+
+
+for(i = 0; i<5; i++) {
+
+  var item = allPhotos.data[i];
+
+  var o = document.createElement('img');
+  //o.className='picture';
+  o.src = item.thumbnail;
+  //o.title = item.name;
+
+  // Append to the list
+  list.appendChild(o);
+
+}
+}*/
+}
+
+</script>
+
+<!--
+  Below we include the Login Button social plugin.
+  This button uses the JavaScript SDK to present
+  a graphical Login button that triggers
+  the FB.login() function when clicked.
+-->
+
+<fb:login-button scope="public_profile,email,user_photos" onlogin="checkLoginState();getFBPhotos();">
+</fb:login-button>
+
+<div id="status">
+</div>
+
+<!-- should only show this button if already logged in -->
+<button id="photobtn" onclick="getFBPhotos()">Get Photos from Facebook</button>
+
+
+<!-- test facebook integration with like button
+https://developers.facebook.com/quickstarts/742522205838021/?platform=web -->
+<!--div
+  class="fb-like"
+  data-share="true"
+  data-width="450"
+  data-show-faces="true">
+</div-->
+
+<div id="photos"></div>
+
+</body>
+</html>
+
+
+<!-- lizzb.github.io/:83
+Failed to load resource: net::ERR_CACHE_MISS https://www.facebook.com/v2.1/plugins/login_button?app_id=742522205838021&c…gin_text=%0A&scope=public_profile%2Cemail%2Cuser_photos&sdk=joey&ret=perms -->
+
+
+<script>
+// jUNK
+
+
+   //FB.api('/10154801035745507', function (response) {
     //console.log(JSON.stringify(response));
 
     
@@ -113,10 +244,6 @@ The /me node is a special endpoint that translates to the user_id of the person 
 GET graph.facebook.com
   /me/photos
   */
-
-  }
-
-
 
 /*
 Make API calls
@@ -291,123 +418,4 @@ Permissions
 A user access token with user_photos permission is required to see all photos that person is tagged in or has uploaded.
 
 */
-
-function getFBPhotos() {
-
-  var i = 0;
-  var list = document.getElementById('photos');
-
-  /* make the API call */
-  var allPhotos = FB.api(
-
-  // this requires permission of user_photos
-        //which fb seems to be picky about
-        // like big red ugly flag like i'll do something illegal
-
-    "/me/photos",
-    function (response) {
-      if (response && !response.error) {
-        /* handle the result */
-        
-        console.log(response);
-        allPhotos = response;
-        //console.log('allPhotos shoudl exist now maybe');
-        console.log('allPhotos.data', allPhotos.data);
-console.log('allPhotos["data"]', allPhotos["data"]);
-
-for(i = 0; i<5; i++) {
-
-  var item = allPhotos.data[i];
-
-  var o = document.createElement('img');
-  //o.className='picture';
-  //o.src = item.thumbnail;
-o.src = item.icon;
-  //o.title = item.name;
-
-  // Append to the list
-  list.appendChild(o);
-  var p = document.createElement('div');
-  var content = document.createTextNode("date"+item.created_time);
-  p.appendChild(content);
-
-}
-
-
-
-        //return response;
-      }
-    }
-);
-
-// allPhotos doesnt exist out heuhh
-//console.log('allPhotos.data', allPhotos.data);
-//console.log('allPhotos["data"]', allPhotos["data"]);
-
-//console.log(allPhotos);
-//console.log(allPhotos['data']); // instead of .data
-
-// if its not equal to null and has a size
-// shoudl be array of photos 
-
-/*if (allPhotos) {
-  // sort descending by "created_time" which is when they were published
-  allPhotos.sort(
-  function(a, b) { 
-  console.log("a.created_time", a.created_time, " b.created_time", b.created_time);
-  return b.created_time - a.created_time; });
-
-
-
-for(i = 0; i<5; i++) {
-
-  var item = allPhotos.data[i];
-
-  var o = document.createElement('img');
-  //o.className='picture';
-  o.src = item.thumbnail;
-  //o.title = item.name;
-
-  // Append to the list
-  list.appendChild(o);
-
-}
-}*/
-}
-
 </script>
-
-<!--
-  Below we include the Login Button social plugin.
-  This button uses the JavaScript SDK to present
-  a graphical Login button that triggers
-  the FB.login() function when clicked.
--->
-
-<fb:login-button scope="public_profile,email,user_photos" onlogin="checkLoginState();">
-</fb:login-button>
-
-<div id="status">
-</div>
-
-<!-- should only show this button if already logged in -->
-<button id="photobtn" onclick="getFBPhotos()">Get Photos from Facebook</button>
-
-
-<!-- test facebook integration with like button
-https://developers.facebook.com/quickstarts/742522205838021/?platform=web -->
-<!--div
-  class="fb-like"
-  data-share="true"
-  data-width="450"
-  data-show-faces="true">
-</div-->
-
-<div id="photos"></div>
-
-</body>
-</html>
-
-
-<!-- lizzb.github.io/:83
-Failed to load resource: net::ERR_CACHE_MISS https://www.facebook.com/v2.1/plugins/login_button?app_id=742522205838021&c…gin_text=%0A&scope=public_profile%2Cemail%2Cuser_photos&sdk=joey&ret=perms -->
