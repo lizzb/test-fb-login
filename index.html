@@ -88,9 +88,7 @@
     //FB.api('/10154801035745507', function (response) {
     //console.log(JSON.stringify(response));
 
-    FB.api('/user/photos', function(response) {
-      console.log(response);
-    });
+    
 //});
 
 
@@ -254,6 +252,65 @@ function format(o){
 
 */
 
+
+/*
+https://developers.facebook.com/docs/facebook-login/permissions/v2.2
+
+user_photos
+
+Provides access to the photos a person has uploaded or been tagged in. This is available through the photos edge on the User object.
+
+Review
+If your app requests this permission Facebook will have to review how your app uses it.
+
+Common Usage
+
+Display a person's pictures on digital photo frame.
+
+Help people export their photos for printing. Only offer this service for a person's personal and non-commercial use.
+
+Access photos for use in a way that visibly enhances the in-app experience (e.g. photo editing, collage, slideshow, and face-in-hole apps).
+
+Access a person's previous profile pictures.
+
+Create albums on behalf of user (posting pictures requires the publish_actions permission.)
+
+
+
+/* make the API call
+FB.api(
+    "/me/photos",
+    function (response) {
+      if (response && !response.error) {
+        /* handle the result 
+      }
+    }
+);
+Permissions
+
+A user access token with user_photos permission is required to see all photos that person is tagged in or has uploaded.
+
+*/
+
+function getFBPhotos() {
+
+//FB.api('/me/photos', function(response) {
+//      console.log(response);
+//    });
+
+/* make the API call */
+FB.api(
+    "/me/photos",
+    function (response) {
+      if (response && !response.error) {
+        /* handle the result */
+        console.log(response);
+      }
+    }
+);
+
+}
+
 </script>
 
 <!--
@@ -266,15 +323,17 @@ function format(o){
 <fb:login-button scope="public_profile,email,user_photos" onlogin="checkLoginState();">
 </fb:login-button>
 
+<button id="photos" onclick="getFBPhotos()">Get Photos from Facebook</button>
+
 
 <!-- test facebook integration with like button
 https://developers.facebook.com/quickstarts/742522205838021/?platform=web -->
-<div
+<!--div
   class="fb-like"
   data-share="true"
   data-width="450"
   data-show-faces="true">
-</div>
+</div-->
 <div id="status">
 </div>
 
