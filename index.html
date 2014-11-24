@@ -151,7 +151,7 @@ Works great. I used this to sort my object array by date. -> array.sort(function
           // Append to the list
           list.appendChild(o);
           var p = document.createElement('div');
-          var content = document.createTextNode("date"+item.created_time + " alt" + item.created_time.getTime());
+          var content = document.createTextNode("date"+item.created_time + " alt" + item.created_time);
           p.appendChild(content);
           p.className = "item";
           list.appendChild(p);
