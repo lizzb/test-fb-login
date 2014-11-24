@@ -322,6 +322,22 @@ if (allPhotos) {
   // sort descending by "created_time" which is when they were published
   allPhotos.sort(function(a, b) {console.log("a.created_time", a.created_time, " b.created_time", b.created_time); return b.created_time - a.created_time; });
 }
+var i = 0;
+var list = document.getElementById('photos');
+
+for(i = 0; i<5; i++) {
+
+  var item = allPhotos[i];
+
+  var o = document.createElement('img');
+  //o.className='picture';
+  o.src = item.thumbnail;
+  //o.title = item.name;
+
+  // Append to the list
+  list.appendChild(o);
+
+}
 
 }
 
@@ -341,7 +357,7 @@ if (allPhotos) {
 </div>
 
 <!-- should only show this button if already logged in -->
-<button id="photos" onclick="getFBPhotos()">Get Photos from Facebook</button>
+<button id="photobtn" onclick="getFBPhotos()">Get Photos from Facebook</button>
 
 
 <!-- test facebook integration with like button
@@ -353,6 +369,7 @@ https://developers.facebook.com/quickstarts/742522205838021/?platform=web -->
   data-show-faces="true">
 </div-->
 
+<div id="photos"></div>
 
 </body>
 </html>
