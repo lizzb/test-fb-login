@@ -123,7 +123,7 @@ function getFBPhotos() {
   // sort descending by "created_time"
   // which is when they were published
   // in order to find most recent
-  allPhotos.sort(
+  allPhotos["data"].sort(
     function(a, b) { 
       console.log("a.created_time", a.created_time, " b.created_time", b.created_time);
       return b.created_time - a.created_time; 
