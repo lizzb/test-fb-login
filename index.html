@@ -132,8 +132,8 @@ Works great. I used this to sort my object array by date. -> array.sort(function
   // in order to find most recent
   allPhotos["data"].sort(
     function(a, b) { 
-      console.log("a.created_time.getTime()", a.created_time.getTime(), " b.created_time.getTime()", b.created_time.getTime());
-      return b.created_time.getTime() - a.created_time.getTime(); 
+      //console.log("a.created_time.getTime()", a.created_time.getTime(), " b.created_time.getTime()", b.created_time.getTime());
+      return new Date(b.created_time).getTime() - new Date (a.created_time).getTime(); 
     });
 
 // right now risky cuz size may not be 5
