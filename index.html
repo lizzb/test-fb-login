@@ -295,10 +295,10 @@ A user access token with user_photos permission is required to see all photos th
 function getFBPhotos() {
 
   var i = 0;
-var list = document.getElementById('photos');
+  var list = document.getElementById('photos');
 
-/* make the API call */
-var allPhotos = FB.api(
+  /* make the API call */
+  var allPhotos = FB.api(
 
   // this requires permission of user_photos
         //which fb seems to be picky about
@@ -312,9 +312,22 @@ var allPhotos = FB.api(
         console.log(response);
         allPhotos = response;
         //console.log('allPhotos shoudl exist now maybe');
-        
+        console.log('allPhotos.data', allPhotos.data);
+console.log('allPhotos["data"]', allPhotos["data"]);
 
+for(i = 0; i<5; i++) {
 
+  var item = allPhotos.data[i];
+
+  var o = document.createElement('img');
+  //o.className='picture';
+  o.src = item.thumbnail;
+  //o.title = item.name;
+
+  // Append to the list
+  list.appendChild(o);
+
+}
 
 
 
@@ -323,16 +336,17 @@ var allPhotos = FB.api(
     }
 );
 
-
-console.log('allPhotos.data', allPhotos.data);
-console.log('allPhotos["data"]', allPhotos["data"]);
+// allPhotos doesnt exist out heuhh
+//console.log('allPhotos.data', allPhotos.data);
+//console.log('allPhotos["data"]', allPhotos["data"]);
 
 //console.log(allPhotos);
 //console.log(allPhotos['data']); // instead of .data
 
 // if its not equal to null and has a size
 // shoudl be array of photos 
-if (allPhotos) {
+
+/*if (allPhotos) {
   // sort descending by "created_time" which is when they were published
   allPhotos.sort(
   function(a, b) { 
@@ -354,7 +368,7 @@ for(i = 0; i<5; i++) {
   list.appendChild(o);
 
 }
-}
+}*/
 }
 
 </script>
