@@ -85,8 +85,12 @@
         'Thanks for logging in, ' + response.name + '!';
     });
 
-    FB.api('/10154801035745507', function (response) {
-    console.log(JSON.stringify(response));
+    //FB.api('/10154801035745507', function (response) {
+    //console.log(JSON.stringify(response));
+
+    FB.api('/me/photos', function(response) {
+      console.log(response);
+    });
 });
 
 
