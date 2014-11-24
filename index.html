@@ -6,6 +6,7 @@
 </head>
 <body>
 <script>
+
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -22,8 +23,8 @@
       document.getElementById('status').innerHTML = 'Please log ' +
         'into this app.';
     } else {
-      // The person is not logged into Facebook, so we're not sure if
-      // they are logged into this app or not.
+      // The person is not logged into Facebook,
+      // so we're not sure if they are logged into this app or not.
       document.getElementById('status').innerHTML = 'Please log ' +
         'into Facebook.';
     }
@@ -83,7 +84,153 @@
       document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';
     });
+
+
+    FB.api('/me/photos', function(response) {
+    console.log(JSON.stringify(response));
+});
+
+
+
+
   }
+
+
+
+/*
+Make API calls
+
+Now the person is authenticated and logged in.
+Your app is now ready to make API calls on their behalf from the browser.
+
+In the browser, the easiest way to do that is with the FB.api() call. 
+
+// FB.api() will automatically add the access token to the call.
+The Facebook SDK for JavaScript automatically handles access token storage and tracking of login status in the browser, so nothing is needed for you to store access tokens in the browser itself.
+
+This code:
+
+FB.api('/me', function(response) {
+    console.log(JSON.stringify(response));
+});
+
+Will return an array of values:
+
+{
+  "id":"101540562372987329832845483",
+  "email":"example@example.com",
+  "first_name":"Bob",
+  [ ... ]
+}
+
+
+*/
+
+//'me/photos' : 'me/photos',
+/*
+function getTaggedPhotos() {
+
+// make the API call 
+FB.api(
+    "/me/photos",
+    function (response) {
+      if (response && !response.error) {
+        // handle the result 
+      }
+    }
+);*/
+
+/*
+// https://developers.facebook.com/docs/graph-api/reference/v2.2/photo
+// make the API call 
+FB.api(
+    "/{photo-id}",
+    function (response) {
+      if (response && !response.error) {
+        // handle the result ......
+      }
+    }
+);
+
+width
+The width of this photo in pixels
+int32
+
+height
+The height of this photo in pixels
+int32
+
+id
+The photo ID
+numeric string
+album
+The album this photo is in
+Album
+*/
+
+
+/*
+property name: created_time
+description: The time this photo was published
+type: datetime
+*/
+/*
+Permissions
+
+A user access token with user_photos permission is required to see all photos that person is tagged in or has uploaded.
+
+
+
+Fields
+
+An array of Photo objects.
+
+
+
+Retrieve up to N photos
+.limit(N)
+
+https://developers.facebook.com/docs/graph-api/using-graph-api/v2.2#fieldexpansion
+
+an example query that will retrieve up to five albums created by someone, and the last five posts in their feed.
+
+GET graph.facebook.com
+  /me?
+    fields=albums.limit(5),posts.limit(5)
+
+
+}
+*/
+
+/*
+
+function format(o){
+  if (typeof o === 'boolean') {
+    o = {success: o};
+  }
+  if(o && "data" in o){
+    var token = hello.getAuthResponse('facebook').access_token;
+    for(var i=0;i<o.data.length;i++){
+      var d = o.data[i];
+      if(d.picture){
+        d.thumbnail = d.picture;
+      }
+      if(d.cover_photo){
+        d.thumbnail = base + d.cover_photo+'/picture?access_token='+token;
+      }
+      if(d.type==='album'){
+        d.files = d.photos = base + d.id+'/photos';
+      }
+      if(d.can_upload){
+        d.upload_location = base + d.id+'/photos';
+      }
+    }
+  }
+  return o;
+}
+
+*/
+
 </script>
 
 <!--
