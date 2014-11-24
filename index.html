@@ -138,7 +138,7 @@ Works great. I used this to sort my object array by date. -> array.sort(function
 
 // right now risky cuz size may not be 5
 
-        for(i = 0; i<5; i++) {
+        for(i = 0; i<allPhotos.data.length; i++) {
           var item = allPhotos.data[i];
           var o = document.createElement('img');
           o.className="item";
@@ -221,6 +221,7 @@ var msnry = new Masonry( container, {
 }
 
 .masonry .item {
+  height: 100px;
   /*width:  60px;
   height: 60px;*/
   float: left;
