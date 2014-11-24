@@ -9,14 +9,27 @@
 
 <script>
 
+/*
+Steps for Using Facebook Login With the JavaScript SDK
+
+High-level steps to integrate Facebook Login into a web application:
+
+1. _Checking the login status_ to see if someone's already logged into your app. During this step, you also should check to see if someone has previously logged into your app, but is not currently logged in.
+2. If they are not logged in, _invoke the login dialog_ and ask for a set of data permissions.
+3. Verify their identity.
+4. Store the resulting access token.
+5. Make API calls.
+6. Log out.
+*/
+
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
     console.log(response);
-    // The response object is returned with a status field that lets the
-    // app know the current login status of the person.
-    // Full docs on the response object can be found in the documentation
-    // for FB.getLoginStatus().
+    // The response object is returned with a status field that
+    // lets the app know the current login status of the person.
+    // Full docs on the response object can be found
+    // in the documentation for FB.getLoginStatus().
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
       testAPI();
@@ -50,10 +63,11 @@
     version    : 'v2.1' // use version 2.1
   });
 
-  // Now that we've initialized the JavaScript SDK, we call 
-  // FB.getLoginStatus().  This function gets the state of the
-  // person visiting this page and can return one of three states to
-  // the callback you provide.  They can be:
+  // Now that we've initialized the JavaScript SDK,
+  // we call FB.getLoginStatus(). 
+  // This function gets the state of the person visiting this page
+  // and can return one of 3 states to the callback you provide.
+  // They can be:
   //
   // 1. Logged into your app ('connected')
   // 2. Logged into Facebook, but not your app ('not_authorized')
@@ -77,17 +91,19 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 
+
+
+
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
   function testAPI() {
-    console.log('Welcome!  Fetching your information.... ');
+    //console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
-      document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name + '!';
+      //document.getElementById('status').innerHTML =
+      //  'Thanks for logging in, ' + response.name + '!';
+      document.getElementById('status').innerHTML = 'Logged in as: ' + response.name;
     });
-    // problem if it does it here getFBPhotos();
-
   }
 
 
@@ -118,13 +134,6 @@ function getFBPhotos() {
         // if its not equal to null and has a size
 // shoudl be array of photos 
 
-/*
-array.sort(function(a,b){return a.getTime() - b.getTime()});
-
-    http://stackoverflow.com/questions/10123953/sort-javascript-object-array-by-date
-Works great. I used this to sort my object array by date. -> array.sort(function(a,b){return a.data.date.getTime() - b.data.date.getTime()}); –  Tyler Rafferty Oct 5 at 17:21 
-
-*/
 
 
 
@@ -191,7 +200,7 @@ Works great. I used this to sort my object array by date. -> array.sort(function
   the FB.login() function when clicked.
 -->
 
-<fb:login-button scope="public_profile,email,user_photos" onlogin="checkLoginState();">
+<fb:login-button scope="public_profile,user_photos" onlogin="checkLoginState();">
 </fb:login-button>
 
 <div id="status">
@@ -240,214 +249,4 @@ var msnry = new Masonry( container, {
 </html>
 
 
-<!-- lizzb.github.io/:83
-Failed to load resource: net::ERR_CACHE_MISS https://www.facebook.com/v2.1/plugins/login_button?app_id=742522205838021&c…gin_text=%0A&scope=public_profile%2Cemail%2Cuser_photos&sdk=joey&ret=perms -->
 
-
-<script>
-// jUNK
-
-
-   //FB.api('/10154801035745507', function (response) {
-    //console.log(JSON.stringify(response));
-
-    
-//});
-
-
- //   FB.api('/113124472034820', function(response) {
-//  console.log(response);
-//});
-
-/*
-    FB.api('/me/photos', function(response) {
-    console.log(JSON.stringify(response));
-});*/
-
-
-
-
-/*
-https://developers.facebook.com/docs/graph-api/using-graph-api/v2.2
-
-
-The /me node is a special endpoint that translates to the user_id of the person (or the page_id of the Facebook Page) whose access token is currently being used to make the API calls. If you had a user access token, you could retrieve all of a user's photos by using:
-
-GET graph.facebook.com
-  /me/photos
-  */
-
-/*
-Make API calls
-
-Now the person is authenticated and logged in.
-Your app is now ready to make API calls on their behalf from the browser.
-
-In the browser, the easiest way to do that is with the FB.api() call. 
-
-// FB.api() will automatically add the access token to the call.
-The Facebook SDK for JavaScript automatically handles access token storage and tracking of login status in the browser, so nothing is needed for you to store access tokens in the browser itself.
-
-This code:
-
-FB.api('/me', function(response) {
-    console.log(JSON.stringify(response));
-});
-
-Will return an array of values:
-
-{
-  "id":"101540562372987329832845483",
-  "email":"example@example.com",
-  "first_name":"Bob",
-  [ ... ]
-}
-
-
-*/
-
-//'me/photos' : 'me/photos',
-/*
-function getTaggedPhotos() {
-
-// make the API call 
-FB.api(
-    "/me/photos",
-    function (response) {
-      if (response && !response.error) {
-        // handle the result 
-      }
-    }
-);*/
-
-/*
-// https://developers.facebook.com/docs/graph-api/reference/v2.2/photo
-// make the API call 
-FB.api(
-    "/{photo-id}",
-    function (response) {
-      if (response && !response.error) {
-        // handle the result ......
-      }
-    }
-);
-
-width
-The width of this photo in pixels
-int32
-
-height
-The height of this photo in pixels
-int32
-
-id
-The photo ID
-numeric string
-album
-The album this photo is in
-Album
-*/
-
-
-/*
-property name: created_time
-description: The time this photo was published
-type: datetime
-*/
-/*
-Permissions
-
-A user access token with user_photos permission is required to see all photos that person is tagged in or has uploaded.
-
-
-
-Fields
-
-An array of Photo objects.
-
-
-
-Retrieve up to N photos
-.limit(N)
-
-https://developers.facebook.com/docs/graph-api/using-graph-api/v2.2#fieldexpansion
-
-an example query that will retrieve up to five albums created by someone, and the last five posts in their feed.
-
-GET graph.facebook.com
-  /me?
-    fields=albums.limit(5),posts.limit(5)
-
-
-}
-*/
-
-/*
-
-function format(o){
-  if (typeof o === 'boolean') {
-    o = {success: o};
-  }
-  if(o && "data" in o){
-    var token = hello.getAuthResponse('facebook').access_token;
-    for(var i=0;i<o.data.length;i++){
-      var d = o.data[i];
-      if(d.picture){
-        d.thumbnail = d.picture;
-      }
-      if(d.cover_photo){
-        d.thumbnail = base + d.cover_photo+'/picture?access_token='+token;
-      }
-      if(d.type==='album'){
-        d.files = d.photos = base + d.id+'/photos';
-      }
-      if(d.can_upload){
-        d.upload_location = base + d.id+'/photos';
-      }
-    }
-  }
-  return o;
-}
-
-*/
-
-
-/*
-https://developers.facebook.com/docs/facebook-login/permissions/v2.2
-
-user_photos
-
-Provides access to the photos a person has uploaded or been tagged in. This is available through the photos edge on the User object.
-
-Review
-If your app requests this permission Facebook will have to review how your app uses it.
-
-Common Usage
-
-Display a person's pictures on digital photo frame.
-
-Help people export their photos for printing. Only offer this service for a person's personal and non-commercial use.
-
-Access photos for use in a way that visibly enhances the in-app experience (e.g. photo editing, collage, slideshow, and face-in-hole apps).
-
-Access a person's previous profile pictures.
-
-Create albums on behalf of user (posting pictures requires the publish_actions permission.)
-
-
-
-/* make the API call
-FB.api(
-    "/me/photos",
-    function (response) {
-      if (response && !response.error) {
-        /* handle the result 
-      }
-    }
-);
-Permissions
-
-A user access token with user_photos permission is required to see all photos that person is tagged in or has uploaded.
-
-*/
-</script>
