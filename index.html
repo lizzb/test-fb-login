@@ -327,15 +327,17 @@ var allPhotos = FB.api(
 console.log('allPhotos.data', allPhotos.data);
 console.log('allPhotos["data"]', allPhotos["data"]);
 
-/*console.log(allPhotos);
-console.log(allPhotos['data']); // instead of .data
+//console.log(allPhotos);
+//console.log(allPhotos['data']); // instead of .data
 
 // if its not equal to null and has a size
-// shoudl be array of photos
-/* console.log("a.created_time", a.created_time, " b.created_time", b.created_time);
+// shoudl be array of photos 
 if (allPhotos) {
   // sort descending by "created_time" which is when they were published
-  allPhotos.sort(function(a, b) { return b.created_time - a.created_time; });
+  allPhotos.sort(
+  function(a, b) { 
+  console.log("a.created_time", a.created_time, " b.created_time", b.created_time);
+  return b.created_time - a.created_time; });
 
 
 
@@ -352,7 +354,7 @@ for(i = 0; i<5; i++) {
   list.appendChild(o);
 
 }
-}*/
+}
 }
 
 </script>
