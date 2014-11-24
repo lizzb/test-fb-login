@@ -7,8 +7,8 @@
 <body>
 <script src="http://masonry.desandro.com/masonry.pkgd.js"></script>
 <script>
-
-var container = document.querySelector('#container');
+//<div id="photos" class="masonry js-masonry"  data-masonry-options='{ "columnWidth": 60 }'></div>
+var container = document.querySelector('#photos');
 var msnry = new Masonry( container, {
   columnWidth: 200,
   itemSelector: '.item'
@@ -149,7 +149,7 @@ for(i = 0; i<5; i++) {
 
 
   var o = document.createElement('img');
-  //o.className="item";
+  o.className="item";
   //o.className='picture';
   //o.src = item.thumbnail;
 //o.src = item.icon; // icon = the photo fb icon
@@ -161,13 +161,14 @@ o.src = item.source;
   var p = document.createElement('div');
   var content = document.createTextNode("date"+item.created_time);
   p.appendChild(content);
+  p.className = "item";
   list.appendChild(p);
 
-  var m = document.createElement('div');
+  /*var m = document.createElement('div');
   m.className="item";
   m.appendChild(content);
   p.appendChild(o);
-  list.appendChild(m);
+  list.appendChild(m);*/
 
 }
 
@@ -240,7 +241,7 @@ https://developers.facebook.com/quickstarts/742522205838021/?platform=web -->
   data-width="450"
   data-show-faces="true">
 </div-->
-<div id="photos" class="masonry js-masonry"  data-masonry-options='{ "columnWidth": 60 }'></div>
+<div id="photos" class="masonry js-masonry"></div>
 
 </body>
 </html>
