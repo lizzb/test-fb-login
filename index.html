@@ -117,6 +117,13 @@ function getFBPhotos() {
         // if its not equal to null and has a size
 // shoudl be array of photos 
 
+/*
+array.sort(function(a,b){return a.getTime() - b.getTime()});
+
+    http://stackoverflow.com/questions/10123953/sort-javascript-object-array-by-date
+Works great. I used this to sort my object array by date. -> array.sort(function(a,b){return a.data.date.getTime() - b.data.date.getTime()}); –  Tyler Rafferty Oct 5 at 17:21 
+
+*/
 
 
 
@@ -125,8 +132,8 @@ function getFBPhotos() {
   // in order to find most recent
   allPhotos["data"].sort(
     function(a, b) { 
-      console.log("a.created_time", a.created_time, " b.created_time", b.created_time);
-      return b.created_time - a.created_time; 
+      console.log("a.created_time.getTime()", a.created_time.getTime(), " b.created_time.getTime()", b.created_time.getTime());
+      return b.created_time.getTime() - a.created_time.getTime(); 
     });
 
 // right now risky cuz size may not be 5
@@ -144,7 +151,7 @@ function getFBPhotos() {
           // Append to the list
           list.appendChild(o);
           var p = document.createElement('div');
-          var content = document.createTextNode("date"+item.created_time);
+          var content = document.createTextNode("date"+item.created_time + " alt" + item.created_time.getTime());
           p.appendChild(content);
           p.className = "item";
           list.appendChild(p);
