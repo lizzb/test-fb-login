@@ -294,14 +294,17 @@ A user access token with user_photos permission is required to see all photos th
 
 function getFBPhotos() {
 
-  var allPhotos = null;
+  var i = 0;
+var list = document.getElementById('photos');
+
+  //var allPhotos = null;
 
 //FB.api('/me/photos', function(response) {
 //      console.log(response);
 //    });
 
 /* make the API call */
-FB.api(
+var allPhotos = FB.api(
     "/me/photos",
     function (response) {
       if (response && !response.error) {
@@ -310,20 +313,22 @@ FB.api(
         //which fb seems to be picky about
         // like big red ugly flag like i'll do something illegal
         //console.log(response);
-        allPhotos = response;
-        console.log(allPhotos);
+        //allPhotos = response;
+        console.log('allPhotos shoudl exist now maybe');
       }
     }
 );
+console.log(allPhotos);
+console.log(allPhotos.data);
 
 // if its not equal to null and has a size
 // shoudl be array of photos
+/* console.log("a.created_time", a.created_time, " b.created_time", b.created_time);*/ 
 if (allPhotos) {
   // sort descending by "created_time" which is when they were published
-  allPhotos.sort(function(a, b) {console.log("a.created_time", a.created_time, " b.created_time", b.created_time); return b.created_time - a.created_time; });
-}
-var i = 0;
-var list = document.getElementById('photos');
+  allPhotos.sort(function(a, b) { return b.created_time - a.created_time; });
+
+
 
 for(i = 0; i<5; i++) {
 
@@ -338,7 +343,7 @@ for(i = 0; i<5; i++) {
   list.appendChild(o);
 
 }
-
+}
 }
 
 </script>
