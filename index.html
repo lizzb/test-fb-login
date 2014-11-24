@@ -86,12 +86,27 @@
     });
 
 
-    FB.api('/me/photos', function(response) {
-    console.log(JSON.stringify(response));
+    FB.api('/113124472034820', function(response) {
+  console.log(response);
 });
 
+/*
+    FB.api('/me/photos', function(response) {
+    console.log(JSON.stringify(response));
+});*/
 
 
+
+
+/*
+https://developers.facebook.com/docs/graph-api/using-graph-api/v2.2
+
+
+The /me node is a special endpoint that translates to the user_id of the person (or the page_id of the Facebook Page) whose access token is currently being used to make the API calls. If you had a user access token, you could retrieve all of a user's photos by using:
+
+GET graph.facebook.com
+  /me/photos
+  */
 
   }
 
