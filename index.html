@@ -4,11 +4,20 @@
 <title>Facebook Login JavaScript Example</title>
 <meta charset="UTF-8">
 
-<script src="http://packery.metafizzy.co/packery.pkgd.min.js"></script>
+
 
 <style>
+* {
+  padding: 0;
+  margin: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 #status { padding-left: 10px; font-style: italic; font-size: 12pt;}
 
+#container {width: 100%; /*clear: both;*/}
 
 button {
 display: block;
@@ -23,16 +32,16 @@ text-decoration: none;
 font-weight: bold;
 font-size: 22px;
 /*height: 33px;
-    width: 196px;*/
+width: 196px;*/
  transition: opacity 0.1s ease-in-out 0s;
 
 /*transition-timing-function: ease-in-out;
 transition-duration: .1s;*/
-  font: normal normal bold normal 22px/33px  'Helvetica Neue', Helvetica, Arial, sans-serif;
+font: normal normal bold normal 22px/33px  'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 
-
+#photos {clear: both;}
 
 
 button:hover, button:active, button:focus {
@@ -42,29 +51,98 @@ button:hover, button:active, button:focus {
   opacity: 1;
 }
 
-
+/*
 .masonry {
   background: #EEE;
-  /*max-width: 640px;*/ }
+  /*max-width: 640px; }
 
 .masonry .item {
   /*height: 40%;
   width:  60px;
-  height: 60px;*/
+  height: 60px;*
   float: left;
-  background: lightblue; /*#D26;*/
+  background: lightblue; /*#D26;*
   border: 2px solid #333;
   border-color: hsla(0, 0%, 0%, 0.5);
-  /*border-radius: 5px;*/
-}
+  /*border-radius: 5px;*
+}*/
 
 
 .item { float: left; }
-
 .item img { display: block }
+/*.is-hidden { display: none; }*/
 
-.is-hidden { display: none; }
 
+
+
+
+
+#mainwrapper {
+  font: 10pt normal Arial, sans-serif;
+  height: auto;
+  margin: 80px auto 0 auto;
+  text-align: center;
+  width: 660px;
+}
+
+
+/* Image Box Style */
+#mainwrapper .box {
+  border: 5px solid #fff;
+  cursor: pointer;
+  height: 182px;
+  float: left;
+  margin: 5px;
+  position: relative;
+  overflow: hidden;
+  width: 200px;
+    -webkit-box-shadow: 1px 1px 1px 1px #ccc;
+    -moz-box-shadow: 1px 1px 1px 1px #ccc;
+    box-shadow: 1px 1px 1px 1px #ccc;
+}
+#mainwrapper .box img {
+  position: absolute;
+  left: 0;
+    -webkit-transition: all 300ms ease-out;
+    -moz-transition: all 300ms ease-out;
+    -o-transition: all 300ms ease-out;
+    -ms-transition: all 300ms ease-out; 
+  transition: all 300ms ease-out;
+}
+
+/* Caption Common Style */
+.box .caption {
+  background-color: rgba(0,0,0,0.8);
+  position: absolute;
+  color: #fff;
+  z-index: 100;
+    -webkit-transition: all 300ms ease-out;
+    -moz-transition: all 300ms ease-out;
+    -o-transition: all 300ms ease-out;
+    -ms-transition: all 300ms ease-out; 
+    transition: all 300ms ease-out;
+  left: 0;
+  height: 30px;
+  width: 200px;
+  display: block;
+  bottom: -30px;
+  line-height: 25pt;
+  text-align: center;
+}
+
+/* Simple Caption */
+.box .simple-caption {
+  
+}
+
+/* Simple Caption :hover Behavior */
+.box:hover .caption {
+  -moz-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  -webkit-transform: translateY(-100%);
+  opacity: 1;
+  transform: translateY(-100%);
+}
 </style>
 
 </head>
@@ -79,6 +157,20 @@ button:hover, button:active, button:focus {
   js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=742522205838021&version=v2.1";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script-->
+
+
+
+
+<!-- Image Caption 1 -->
+<div id="mainwrapper">
+    <div id="box-1" class="box">
+      <img id="image-1" src="http://demo.hongkiat.com/css3-image-captions/images/1.jpg"/>
+        <span class="caption simple-caption">
+          <p>Simple Caption</p>
+        </span>
+    </div>
+
+</div>
 
 
 
@@ -186,6 +278,26 @@ High-level steps to integrate Facebook Login into a web application:
 function getPhotos() {
   FB.getLoginStatus(function(response) {
     if (response.status === 'connected') {
+/*
+    var container = document.querySelector('#container');
+
+
+
+  var pckry = new Packery( container, {
+    itemSelector: '.item',
+    gutter: 10
+  });*/
+
+       // dynamically create item elements;
+ // var fragment = document.createDocumentFragment();
+ // fragment.appendChild(getFBPhotos(document.getElementById('numPhotos').value););
+  /*for ( var i = 0; i < 40; i++ ) {
+    var elem = makeItemElem();
+    fragment.appendChild( elem );
+  }*/
+
+ // container.appendChild( fragment );
+
       getFBPhotos(document.getElementById('numPhotos').value);
     } 
     else if (response.status === 'not_authorized') {
@@ -203,6 +315,25 @@ function getPhotos() {
 
 function getFBPhotos(N) {
 
+  
+
+
+/*
+    var container = document.querySelector('#container');
+  // dynamically create item elements;
+  var fragment = document.createDocumentFragment();
+  for ( var i = 0; i < 40; i++ ) {
+    var elem = makeItemElem();
+    fragment.appendChild( elem );
+  }
+
+  var pckry = new Packery( container, {
+    itemSelector: '.item',
+    gutter: 10
+  });
+
+  container.appendChild( fragment );
+*/
   var i = 0;
   var list = document.getElementById('photos');
   list.innerHTML = ""; // clear the div in case it had photos in it already
@@ -258,31 +389,63 @@ function getFBPhotos(N) {
 
   // counter for adding visual interest by alternating masonry
   // of the images based on orientation/layout/dimensions
-    var portraitCount = 0;
-    var landscapeCount = 0;
+  //  var portraitCount = 0;
+  //  var landscapeCount = 0;
 
 
         for(i = 0; i<allPhotos.data.length; i++) {
 
-          var photo = allPhotos.data[i]; //pic
+          //var photo = allPhotos.data[i]; //pic
 
-          var imgDiv = document.createElement('div');
-          imgDiv.className="item";
-          var imgDate = new Date(photo.created_time); 
-          //(photo.back....
-          //var content = document.createTextNode(imgDate.toDateString());
+          // Append to the list/"brick wall" of photos fit together
+          // lets call t hem units? idk
+          //list.appendChild(imgDiv);
 
-          // jankyyy
-          imgDiv.innerHTML = "<small>"+imgDate.toDateString() + "</small><br>";
-           //imgDiv.style.backgroundImage = photo.source;
-          
-//imgDiv.width = photo.width / 4;
+          list.appendChild(makePictureBrick(allPhotos.data[i]));
 
-          var pic = document.createElement('img');
-          
-          
-          pic.src = photo.source;
+        }
+      }
+    }
+}
+);
+
+
+}
+
+
+
+
+
+// makePictureBrick makePictureBlock createImageUnit createPHotoUnit
+// makePictureUnit
+function makePictureBrick(photo) {
+
+  var imgDiv = document.createElement('div');
+  imgDiv.className="item";
+
+  var pic = document.createElement('img');
+  pic.src = photo.source;
+  pic.height = photo.height / 2;
+  //pic.width = photo.width;
+
+
+  // Date/time this photo was published on FB
+  var imgDate = new Date(photo.created_time); 
+  //var content = document.createTextNode(imgDate.toDateString());
+  //imgDiv.appendChild(content);
+  // .............
+  imgDiv.innerHTML = "<small>"+imgDate.toDateString() + "</small><br>";
          
+          //imgDiv.maxWidth =
+  
+  imgDiv.appendChild(pic);
+  
+  return imgDiv;
+         
+
+          //imgDiv.style.backgroundImage = photo.source;         
+//imgDiv.width = photo.width / 4;
+         /*
           // Determine picture dimensions for visual interest
 
           // Portrait/vertical orientation picture
@@ -297,58 +460,7 @@ function getFBPhotos(N) {
             if (landscapeCount % 2 && (!portraitCount % 2)) pic.height = 100;
             else pic.height = 200;
             landscapeCount++;
-          }
-          
-          //ticker++;
-
-          //imgDiv.appendChild(content);
-          imgDiv.appendChild(pic);
-          //imgDiv.maxWidth =
-          
-          list.appendChild(imgDiv);
-
-          /*var item = allPhotos.data[i];
-          var o = document.createElement('img');
-          o.className="item";
-          //o.className='picture';
-          //o.src = item.thumbnail;
-          //o.src = item.icon; // icon = the photo fb icon
-          o.src = item.source;
-          o.height = item.height / 4;
-          //o.title = item.name;
-
-          // Append to the list
-          list.appendChild(o);
-          var p = document.createElement('div');
-          var imgdate = new Date(item.created_time);
-          var content = document.createTextNode(""+imgdate.toDateString());
-          //var content = document.createTextNode("date<br>"+item.created_time + "<br>alt<br>" + item.created_time);
-          p.appendChild(content);
-          p.className = "item";
-          list.appendChild(p);
-
-          /*var m = document.createElement('div');
-          m.className="item";
-          m.appendChild(content);
-          p.appendChild(o);
-          list.appendChild(m);*/
-        }
-      }
-    }
-}
-);
-
-// allPhotos doesnt exist out heuhh
-//console.log('allPhotos.data', allPhotos.data);
-//console.log('allPhotos["data"]', allPhotos["data"]);
-
-//console.log(allPhotos);
-//console.log(allPhotos['data']); // instead of .data
-
-//} end if allPhotos braces
-//console.log("all photos at end", allPhotos);
-
-
+          }*/ 
 }
 
 </script>
@@ -377,23 +489,45 @@ Number of most recent photos to pull from Facebook:
 <!-- should only show this button if already logged in -->
 <button id="photobtn" onclick="getPhotos()">Get Photos!</button>
 
+
 <div id="photos" class="masonry js-masonry"></div>
 
 <div id="container"></div>
 
 
-
+<script src="http://packery.metafizzy.co/packery.pkgd.min.js"></script>
 <script src="http://masonry.desandro.com/masonry.pkgd.js"></script>
 <script>
+var container = document.querySelector('#photos');
+var pckry = new Packery( container, {
+  itemSelector: '.item',
+  gutter: 0
+});
+
+
+
 //<div id="photos" class="masonry js-masonry"  data-masonry-options='{ "columnWidth": 60 }'></div>
+
+/*
 var container = document.querySelector('#photos');
 var msnry = new Masonry( container, {
   columnWidth: 200,
   itemSelector: '.item'
 });
+*/
 
+
+/*
+var container = document.querySelector('#container');
+
+
+
+  var pckry = new Packery( container, {
+    itemSelector: '.item',
+    gutter: 10
+  });*/
 // packery and imagesloaded added as external resources
-
+/*
 docReady( function() {
 
   var container = document.querySelector('#container');
@@ -425,6 +559,8 @@ docReady( function() {
 
 });
 
+
+
 // create <div class="item"><img /></div>
 function makeItemElem() {
   var item = document.createElement('div');
@@ -436,13 +572,15 @@ function makeItemElem() {
   img.src = 'http://lorempixel.com/' + width + '/' + height;
   item.appendChild( img );
   return item;
-}
+
+
+  var item = document.createElement('div');
+  item.className = 'item is-hidden';
+  var img = document.createElement('img');
+}*/
 
 </script>
 
-var item = document.createElement('div');
-  item.className = 'item is-hidden';
-  var img = document.createElement('img');
 
 
 </body>
