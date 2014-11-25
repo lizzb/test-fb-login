@@ -197,7 +197,7 @@ function getFBPhotos(N) {
           //var content = document.createTextNode(imgDate.toDateString());
 
           // jankyyy
-          //imgDiv.innerHTML = "<small>"+imgDate.toDateString() + "</small><br>";
+          imgDiv.innerHTML = "<small>"+imgDate.toDateString() + "</small><br>";
            //imgDiv.style.backgroundImage = photo.source;
           
 //imgDiv.width = photo.width / 4;
@@ -212,14 +212,14 @@ function getFBPhotos(N) {
           // Portrait/vertical orientation picture
           if(pic.height > pic.width) {
             //pic.height = photo.height / 2.5; // 4
-            if (!portraitCount % 2 && (landscapeCount % 2)) pic.height = 400;
-            else pic.height = 300;
+            if (portraitCount % 2) pic.height = 200;
+            else pic.height = 400;
             portraitCount++;
           }
           // Horizontal/Landscape orientation picture (or square)
           else {
-            if (portraitCount % 2) pic.width = 200;
-            else pic.width = 400;
+            if (landscapeCount % 2 && (!portraitCount % 2)) pic.height = 100;
+            else pic.height = 200;
             landscapeCount++;
           }
           
@@ -227,6 +227,7 @@ function getFBPhotos(N) {
 
           //imgDiv.appendChild(content);
           imgDiv.appendChild(pic);
+          //imgDiv.maxWidth =
           
           list.appendChild(imgDiv);
 
