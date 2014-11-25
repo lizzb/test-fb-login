@@ -3,8 +3,84 @@
 <head>
 <title>Facebook Login JavaScript Example</title>
 <meta charset="UTF-8">
+
+<script src="http://packery.metafizzy.co/packery.pkgd.min.js"></script>
+
+<style>
+#status { padding-left: 10px; font-style: italic; font-size: 12pt;}
+
+
+button {
+display: block;
+padding: 12px 10px;
+border: 2px solid #4F8EF7;
+border-radius: 4px;
+background-color: white;
+opacity: 0.7;
+color: #4F8EF7;
+text-align: center;
+text-decoration: none;
+font-weight: bold;
+font-size: 22px;
+/*height: 33px;
+    width: 196px;*/
+ transition: opacity 0.1s ease-in-out 0s;
+
+/*transition-timing-function: ease-in-out;
+transition-duration: .1s;*/
+  font: normal normal bold normal 22px/33px  'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+
+
+
+
+button:hover, button:active, button:focus {
+  text-decoration: underline;
+  background: #4F8EF7;
+  color: white;
+  opacity: 1;
+}
+
+
+.masonry {
+  background: #EEE;
+  /*max-width: 640px;*/ }
+
+.masonry .item {
+  /*height: 40%;
+  width:  60px;
+  height: 60px;*/
+  float: left;
+  background: lightblue; /*#D26;*/
+  border: 2px solid #333;
+  border-color: hsla(0, 0%, 0%, 0.5);
+  /*border-radius: 5px;*/
+}
+
+
+.item { float: left; }
+
+.item img { display: block }
+
+.is-hidden { display: none; }
+
+</style>
+
 </head>
 <body>
+
+
+
+<!--script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=742522205838021&version=v2.1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script-->
+
+
 
 
 <script>
@@ -283,11 +359,17 @@ function getFBPhotos(N) {
   a graphical Login button that triggers
   the FB.login() function when clicked.
 -->
-<fb:login-button scope="public_profile,user_photos" onlogin="checkLoginState();">
+
+<div id="fb-root"></div>
+<!--div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="true">Log in</div-->
+
+
+<fb:login-button scope="public_profile,user_photos" onlogin="checkLoginState();" data-size="large" data-auto-logout-link="true">
 </fb:login-button>
 
-<div id="status"></div>
+<span id="status"></span>
 
+<br><br>
 Number of most recent photos to pull from Facebook: 
 <input type="number" id="numPhotos" min="1" max="25" value="6">
 <br><br>
@@ -295,9 +377,9 @@ Number of most recent photos to pull from Facebook:
 <!-- should only show this button if already logged in -->
 <button id="photobtn" onclick="getPhotos()">Get Photos!</button>
 
-
 <div id="photos" class="masonry js-masonry"></div>
 
+<div id="container"></div>
 
 
 
@@ -310,25 +392,57 @@ var msnry = new Masonry( container, {
   itemSelector: '.item'
 });
 
+// packery and imagesloaded added as external resources
+
+docReady( function() {
+
+  var container = document.querySelector('#container');
+  // dynamically create item elements;
+  var fragment = document.createDocumentFragment();
+  for ( var i = 0; i < 40; i++ ) {
+    var elem = makeItemElem();
+    fragment.appendChild( elem );
+  }
+
+  var pckry = new Packery( container, {
+    itemSelector: '.item',
+    gutter: 10
+  });
+
+  container.appendChild( fragment );
+
+  // for each loaded image...
+  var imgLoad = imagesLoaded( container );
+  imgLoad.on( 'progress', function( imgLoad, image ) {
+    if ( !image.isLoaded ) {
+      return;
+    }
+    // un-hide item and lay out
+    var itemElem = image.img.parentNode;
+    classie.remove( itemElem, 'is-hidden' );
+    pckry.appended( itemElem );
+  });
+
+});
+
+// create <div class="item"><img /></div>
+function makeItemElem() {
+  var item = document.createElement('div');
+  item.className = 'item is-hidden';
+  var img = document.createElement('img');
+  // random image size
+  var width = Math.floor( Math.random() * 200 ) + 50;
+  var height = Math.floor( Math.random() * 200 ) + 50;
+  img.src = 'http://lorempixel.com/' + width + '/' + height;
+  item.appendChild( img );
+  return item;
+}
+
 </script>
 
-<style>
-
-.masonry {
-  background: #EEE;
-  /*max-width: 640px;*/ }
-
-.masonry .item {
-  /*height: 40%;
-  width:  60px;
-  height: 60px;*/
-  float: left;
-  background: lightblue; /*#D26;*/
-  border: 2px solid #333;
-  border-color: hsla(0, 0%, 0%, 0.5);
-  /*border-radius: 5px;*/
-}
-</style>
+var item = document.createElement('div');
+  item.className = 'item is-hidden';
+  var img = document.createElement('img');
 
 
 </body>
