@@ -5,6 +5,11 @@
 <meta charset="UTF-8">
 
 <style>
+/*
+naughty internal style sheet,
+but this whole example is rather small and self-contained
+*/
+
 * {
   margin: auto;
   -moz-box-sizing: border-box;
@@ -20,6 +25,10 @@ header {padding: 10px;}
   font-style: italic;
   font-size: 12pt;
 }
+
+/*
+Button styling reference: http://ionicons.com/ by drifty
+*/
 
 button {
 display: block;
@@ -79,10 +88,14 @@ img .horiz {}
   transition: all 300ms ease-out;
 }
 
+/*
+CSS3 Hover effects for image captions reference:
+http://www.hongkiat.com/blog/css3-image-captions/
+*/
 
 /* Caption Common Style - 
-caption as an tag is not always consistent across browsers, 
-hence using a class */
+the caption element/tag is not always consistent across browsers, 
+thus using a span class */
 caption,
 .item .caption {
   background-color: rgba(0,0,0,0.8);
@@ -104,9 +117,101 @@ caption,
   opacity: 1;
   transform: translateY(-100%);
 }
+
+
+/* 
+resources for viewport choices:
+http://stackoverflow.com/questions/12045893/which-are-the-most-important-media-queries-to-use-in-creating-mobile-responsive
+
+future considerations:
+http://bradfrost.com/blog/post/7-habits-of-highly-effective-media-queries/
+ish - http://bradfrost.com/demo/ish/
+*/
+
+
+/* generic media queries (from bootstrap 3) */
+/* Landscape phones and down */
+@media (max-width: 480px) {
+
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+  
+}
+
+
+
+/* media queries based on scotch.io homepage
+explored at: http://jsbin.com/pasaf/ */
+.event {
+  margin: 15px 5px;
+  margin: 5px;
+  padding: 30px 15px;
+  
+ /* margin: 15px 5px; margin: auto 0px; 
+  max-width: 300px;*/
+  
+  /*max-width: 220px;*/
+  
+  display: inline-block;
+  position: relative;
+  height: 150px;
+  border-radius: 3px 3px 3px 3px;
+  font: normal normal normal 15px/22.5px monospace, serif;
+  
+  /*
+    color: rgb(51, 51, 51);
+    
+    height: 401.996551513672px;
+   
+  
+    border: 0px none rgb(51, 51, 51);
+    outline: rgb(51, 51, 51) none 0px;
+    padding: 0px 15px;
+  
+  font: normal normal normal 15.5555562973022px/23.8095245361328px 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
+  
+  
+}
+
+
+
+
+
+@media only screen and (max-width : 320px) {
+/* Styles */
+  .event { width: 100%; margin: 10px auto; /*max-width: 300px; margin: 15px;*/}
+}
+
+@media only screen and (min-width: 320px) and (max-width : 786px) {
+/* Styles */
+  .event { width: 45%; max-width: 300px;}
+}
+
+@media only screen and (min-width : 786px) {
+  .event { width: 22%;  max-width: 300px;}
+}
+
+
 </style>
 
 <script>
+/*
+still naughty internal script file,
+but this whole example is rather small and self-contained
+*/
+
 /* Facebook Login With the JavaScript SDK
 for integration into a web application */
 
@@ -238,7 +343,7 @@ function getPhotos() {
 function getFBPhotos(N) {
   var i = 0;
   var photoDisplay = document.getElementById('photos');
-  // clear the div in case it had photos in it already
+  // clear the div in case it had photos (or a message) in it already
   photoDisplay.innerHTML = ""; 
 
   /* make the API call
@@ -251,9 +356,8 @@ function getFBPhotos(N) {
       "/me/photos?limit="+N,
       function (allPhotos) {
         if (allPhotos && !allPhotos.error) { 
-        // will return an array of photos in response.data
+        // will return an array of photo objects in response.data
         // if its not equal to null and has a size
-        // shoudl be array of photos 
         //if(allPhotos.data.length;)
         if( (allPhotos.data.length == 0) || 
           (allPhotos.data.length < N) ) {
@@ -266,6 +370,7 @@ function getFBPhotos(N) {
 
   // Sort array of photos based on their created datetime
   // (most recent first)
+  // The packing layout plugin may adjust placement for best fit
   allPhotos["data"].sort(
     function(a, b) { 
 // https://developers.facebook.com/docs/graph-api/reference/v2.2/photo  
@@ -303,17 +408,16 @@ function makePictureBrick(photo) {
 
   // if you change it in css image shrinks not div, leaving space
   //pic.height = photo.height / 2;
-  pic.width = photo.width / 2;
+  pic.width = photo.width / 2; // height w
 
-  // Determine whether picture is portrait or landscape orientation
-  // Landscape default
-  pic.className = pic.className = "horiz"; // horizontal
-  // othewise Portrait or square
-  if(photo.width < photo.height) pic.className = "vert"; // vertical
+  // Determine whether photo orientation is portrait vs. landscape 
+  pic.className = "horiz"; // default horizontal/landscape 
+  // othewise portrait/vertical or square
+  if(photo.width < photo.height) pic.className = "vert";
   
   // Caption on hover = Date this photo was published on FB
   var imgDate = new Date(photo.created_time);
-  //var imgCaption = document.createTextNode(imgDate.toDateString());
+  //var dateCaption = document.createTextNode(imgDate.toDateString());
   var imgCaption = document.createElement('span');
   imgCaption.className = "caption";
   imgCaption.innerHTML = imgDate.toDateString();
@@ -352,9 +456,11 @@ function makePictureBrick(photo) {
 
 <div id="photos"></div>
 
-<!-- Packery plugin for bin-packing layout -->
+<!-- Packery plugin for bin-packing layout by desandro-->
 <script src="packery.pkgd.min.js"></script> 
-<!--script src="http://packery.metafizzy.co/packery.pkgd.min.js"></script-->
+<!--
+<script src="http://packery.metafizzy.co/packery.pkgd.min.js"></script>
+-->
 <script>
 var container = document.querySelector('#photos');
 var pckry = new Packery( container, {
