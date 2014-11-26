@@ -95,7 +95,7 @@ the caption element/tag is not always consistent across browsers,
 thus using a span class */
 caption,
 .item .caption {
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(51, 51, 51, .8);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;
   color: #fff;
   z-index: 100;
@@ -114,69 +114,6 @@ caption,
   opacity: 1;
   transform: translateY(-100%);
 }
-
-img {width: 100;}
-/*img .vert { width: 100%;}
-img .horiz { width: 100%;}*/
-/* 
-resources for viewport choices:
-http://stackoverflow.com/questions/12045893/which-are-the-most-important-media-queries-to-use-in-creating-mobile-responsive
-
-future considerations:
-http://bradfrost.com/blog/post/7-habits-of-highly-effective-media-queries/
-ish - http://bradfrost.com/demo/ish/
-*/
-
-
-/* generic media queries (from bootstrap 3) */
-/* Landscape phones and down */
-@media (max-width: 480px) {
-  .vert { height: 100%;}
-  .horiz { width: 100%;}
-}
-
-/* Landscape phone to portrait tablet */
-@media (max-width: 767px) {
-  .vert { height: 40%;}
-  .horiz { width: 40%;}
-}
-
-/* Portrait tablet to landscape and desktop */
-@media (min-width: 768px) and (max-width: 979px) {
-  .vert { height: 50%;}
-  .horiz { width: 50%;}
-}
-
-/* Large desktop */
-@media (min-width: 1200px) {
-  .vert { height: 20%;}
-  .horiz { width: 20%;}
-}
-
-
-/*
-  font: normal normal normal 15.5555562973022px/23.8095245361328px 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  */
-/* media queries based on scotch.io homepage
-explored at: http://jsbin.com/pasaf/ */
-/* 
-.event {
-}
-
-@media only screen and (max-width : 320px) {
-  .event { width: 100%; margin: 10px auto;}
-}
-
-@media only screen and (min-width: 320px) and (max-width : 786px) {
-  .event { width: 45%; max-width: 300px;}
-}
-
-@media only screen and (min-width : 786px) {
-  .event { width: 22%;  max-width: 300px;}
-}
-*/
-
-
 </style>
 
 <script>
@@ -381,19 +318,10 @@ function makePictureBrick(photo) {
   var pic = document.createElement('img');
   pic.src = photo.source;
 
-  // if you change width of image in css
-  // only the image shrinks, not enclosing div,
-  // leaving awkward space
-  //pic.height = photo.height; // /2;
+  // Generate a random factor to scale down photo dimensions
+  // from original size ... pretty limited, just 1/2, 1/3, or 1/4
+  pic.width = photo.width / Math.floor((Math.random() * 4) + 2);
 
-  //imgDiv.width = photo.width / 2;
- 
-  // Determine whether photo orientation is portrait vs. landscape 
-  imgDiv.className = "horiz"; // default horizontal/landscape 
-  // othewise portrait/vertical or square
-  if(photo.width < photo.height) imgDiv.className = "vert";
-
-  
   // Caption on hover = Date this photo was published on FB
   var imgDate = new Date(photo.created_time);
   var imgCaption = document.createElement('span');
@@ -424,7 +352,7 @@ function makePictureBrick(photo) {
     <span id="status"></span>
 
     <p>Number of most recent photos to pull from Facebook:
-        <input type="number" id="numPhotos" min="1" max="25" value="6">
+        <input type="number" id="numPhotos" min="1" max="25" value="20">
     </p>
 
     <!-- should really only show this button if already logged in -->
