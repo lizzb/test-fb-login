@@ -73,9 +73,6 @@ centered */
   display: block;
 }
 
-img .vert {}
-img .horiz {}
-
 /*.item img, */
 .item .caption {
   display: block;
@@ -103,7 +100,7 @@ caption,
   color: #fff;
   z-index: 100;
   height: 30px;
-  width: 100%; /*200px;*/
+  width: 100%;
   bottom: -30px;
   line-height: 25pt;
   font-size: 10pt;
@@ -118,7 +115,9 @@ caption,
   transform: translateY(-100%);
 }
 
-
+img {width: 100;}
+/*img .vert { width: 100%;}
+img .horiz { width: 100%;}*/
 /* 
 resources for viewport choices:
 http://stackoverflow.com/questions/12045893/which-are-the-most-important-media-queries-to-use-in-creating-mobile-responsive
@@ -132,76 +131,50 @@ ish - http://bradfrost.com/demo/ish/
 /* generic media queries (from bootstrap 3) */
 /* Landscape phones and down */
 @media (max-width: 480px) {
-
+  .vert { height: 100%;}
+  .horiz { width: 100%;}
 }
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
-
+  .vert { height: 40%;}
+  .horiz { width: 40%;}
 }
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) {
-
+  .vert { height: 50%;}
+  .horiz { width: 50%;}
 }
 
 /* Large desktop */
 @media (min-width: 1200px) {
-  
+  .vert { height: 20%;}
+  .horiz { width: 20%;}
 }
 
 
-
+/*
+  font: normal normal normal 15.5555562973022px/23.8095245361328px 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  */
 /* media queries based on scotch.io homepage
 explored at: http://jsbin.com/pasaf/ */
+/* 
 .event {
-  margin: 15px 5px;
-  margin: 5px;
-  padding: 30px 15px;
-  
- /* margin: 15px 5px; margin: auto 0px; 
-  max-width: 300px;*/
-  
-  /*max-width: 220px;*/
-  
-  display: inline-block;
-  position: relative;
-  height: 150px;
-  border-radius: 3px 3px 3px 3px;
-  font: normal normal normal 15px/22.5px monospace, serif;
-  
-  /*
-    color: rgb(51, 51, 51);
-    
-    height: 401.996551513672px;
-   
-  
-    border: 0px none rgb(51, 51, 51);
-    outline: rgb(51, 51, 51) none 0px;
-    padding: 0px 15px;
-  
-  font: normal normal normal 15.5555562973022px/23.8095245361328px 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
-  
-  
 }
 
-
-
-
-
 @media only screen and (max-width : 320px) {
-/* Styles */
-  .event { width: 100%; margin: 10px auto; /*max-width: 300px; margin: 15px;*/}
+  .event { width: 100%; margin: 10px auto;}
 }
 
 @media only screen and (min-width: 320px) and (max-width : 786px) {
-/* Styles */
   .event { width: 45%; max-width: 300px;}
 }
 
 @media only screen and (min-width : 786px) {
   .event { width: 22%;  max-width: 300px;}
 }
+*/
 
 
 </style>
@@ -308,9 +281,10 @@ function getPhotos() {
       var N = document.getElementById('numPhotos').value;
 
       // error check for negative N
-      // >0 is acceptable, no high cap / large number ok too
+      // positive integers acceptable, no high cap
+      // (though this may slow user experience if loading a ton of pics)
       if(N <= 0) {
-        // change displayed value
+        // change displayed input value
         document.getElementById('numPhotos').value = 1;
         N = 1; // require minimum of 1
         document.getElementById('photos').innerHTML = 'Please enter ' +
@@ -320,9 +294,10 @@ function getPhotos() {
         // if they enter a decimal, change both the displayed value
         // and the actual fed in parameter
 
-        // Note: this line redundant if they entered an integer...
+        // Makes input number an integer, if not already
         document.getElementById('numPhotos').value = Math.floor(N);
 
+        // Start the action!
         getFBPhotos(Math.floor(N));
       }
     } 
@@ -346,6 +321,7 @@ function getFBPhotos(N) {
   // clear the div in case it had photos (or a message) in it already
   photoDisplay.innerHTML = ""; 
 
+// https://developers.facebook.com/docs/graph-api/reference/v2.2/photo  
   /* make the API call
     - me/photos: gets all photos user is tagged in
     - me/photos/uploaded: gets all photos the user has uploaded
@@ -357,23 +333,21 @@ function getFBPhotos(N) {
       function (allPhotos) {
         if (allPhotos && !allPhotos.error) { 
         // will return an array of photo objects in response.data
-        // if its not equal to null and has a size
         //if(allPhotos.data.length;)
-        if( (allPhotos.data.length == 0) || 
-          (allPhotos.data.length < N) ) {
-          if(allPhotos.data.length == 0) 
+
+        if( allPhotos.data.length <= 0)
             photoDisplay.innerHTML = "You aren't tagged in any photos!";
-          else
-            photoDisplay.innerHTML = "You don't have " + N + " photos tagged of you... Posting all existing photos."
-        }
         else {
+            if(allPhotos.data.length < N) {
+              console.log("Total number of photos user is tagged in: ", allPhotos.data.length);
+             photoDisplay.appendChild(document.createTextNode("You don't have " + N + " photos tagged of you... Posting all existing photos."));
+           }
 
   // Sort array of photos based on their created datetime
   // (most recent first)
   // The packing layout plugin may adjust placement for best fit
   allPhotos["data"].sort(
     function(a, b) { 
-// https://developers.facebook.com/docs/graph-api/reference/v2.2/photo  
     // backdated_time is when a photo was taken
     // but that property doesnt always exist, so
     // sort descending by "created_time" (when they were published)
@@ -395,6 +369,7 @@ function getFBPhotos(N) {
 
 }
 
+//
 // Create HTML element for the picture/photo
 // "brick"/"block"/"unit"... whatever you want to call it
 function makePictureBrick(photo) {
@@ -406,22 +381,25 @@ function makePictureBrick(photo) {
   var pic = document.createElement('img');
   pic.src = photo.source;
 
-  // if you change it in css image shrinks not div, leaving space
-  //pic.height = photo.height / 2;
-  pic.width = photo.width / 2; // height w
+  // if you change width of image in css
+  // only the image shrinks, not enclosing div,
+  // leaving awkward space
+  //pic.height = photo.height; // /2;
 
+  //imgDiv.width = photo.width / 2;
+ 
   // Determine whether photo orientation is portrait vs. landscape 
-  pic.className = "horiz"; // default horizontal/landscape 
+  imgDiv.className = "horiz"; // default horizontal/landscape 
   // othewise portrait/vertical or square
-  if(photo.width < photo.height) pic.className = "vert";
+  if(photo.width < photo.height) imgDiv.className = "vert";
+
   
   // Caption on hover = Date this photo was published on FB
   var imgDate = new Date(photo.created_time);
-  //var dateCaption = document.createTextNode(imgDate.toDateString());
   var imgCaption = document.createElement('span');
   imgCaption.className = "caption";
   imgCaption.innerHTML = imgDate.toDateString();
-  imgDiv.appendChild(imgCaption); //dateCaption
+  imgDiv.appendChild(imgCaption);
   imgDiv.appendChild(pic);
   
   return imgDiv;
