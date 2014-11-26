@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Facebook Login JavaScript Example</title>
+<title>Facebook Login and Display Recent Photos</title>
 <meta charset="UTF-8">
-
-
 
 <style>
 * {
-  padding: 0;
-  margin: 0;
+  margin: auto;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  text-align: center;
 }
 
-#status { padding-left: 10px; font-style: italic; font-size: 12pt;}
+header {padding: 10px;}
 
-#container {width: 100%; /*clear: both;*/}
+#status { 
+  padding-left: 10px;
+  font-style: italic;
+  font-size: 12pt;
+}
 
 button {
 display: block;
@@ -27,22 +29,10 @@ border-radius: 4px;
 background-color: white;
 opacity: 0.7;
 color: #4F8EF7;
-text-align: center;
-text-decoration: none;
-font-weight: bold;
-font-size: 22px;
-/*height: 33px;
-width: 196px;*/
- transition: opacity 0.1s ease-in-out 0s;
-
-/*transition-timing-function: ease-in-out;
-transition-duration: .1s;*/
+width: 196px;
+transition: opacity 0.1s ease-in-out 0s;
 font: normal normal bold normal 22px/33px  'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-
-
-#photos {clear: both;}
-
 
 button:hover, button:active, button:focus {
   text-decoration: underline;
@@ -51,92 +41,60 @@ button:hover, button:active, button:focus {
   opacity: 1;
 }
 
-/*
-.masonry {
-  background: #EEE;
-  /*max-width: 640px; }
+header p { padding: 35px;}
 
-.masonry .item {
-  /*height: 40%;
-  width:  60px;
-  height: 60px;*
-  float: left;
-  background: lightblue; /*#D26;*
-  border: 2px solid #333;
-  border-color: hsla(0, 0%, 0%, 0.5);
-  /*border-radius: 5px;*
-}*/
-
-
-.item { float: left; }
-.item img { display: block }
-/*.is-hidden { display: none; }*/
-
-
-
-
-
-
-#mainwrapper {
-  font: 10pt normal Arial, sans-serif;
-  height: auto;
-  margin: 80px auto 0 auto;
-  text-align: center;
-  width: 660px;
-}
+#photos {clear: both; padding: 0px 10px; /*margin: auto;*/}
+/* not sure if plugin allows the photos packery area to be 
+centered */
 
 
 /* Image Box Style */
-#mainwrapper .box {
+.item { 
+  float: left; 
+
   border: 5px solid #fff;
-  cursor: pointer;
-  height: 182px;
-  float: left;
-  margin: 5px;
   position: relative;
   overflow: hidden;
-  width: 200px;
     -webkit-box-shadow: 1px 1px 1px 1px #ccc;
     -moz-box-shadow: 1px 1px 1px 1px #ccc;
     box-shadow: 1px 1px 1px 1px #ccc;
+
 }
-#mainwrapper .box img {
+.item img { 
+  display: block;
+}
+
+/*.item img, */
+.item .caption {
+  display: block;
   position: absolute;
   left: 0;
-    -webkit-transition: all 300ms ease-out;
+   -webkit-transition: all 300ms ease-out;
     -moz-transition: all 300ms ease-out;
     -o-transition: all 300ms ease-out;
     -ms-transition: all 300ms ease-out; 
   transition: all 300ms ease-out;
 }
 
-/* Caption Common Style */
-.box .caption {
+
+/* Caption Common Style - 
+caption as an tag is not always consistent across browsers, 
+hence using a class */
+caption,
+.item .caption {
   background-color: rgba(0,0,0,0.8);
-  position: absolute;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;
   color: #fff;
   z-index: 100;
-    -webkit-transition: all 300ms ease-out;
-    -moz-transition: all 300ms ease-out;
-    -o-transition: all 300ms ease-out;
-    -ms-transition: all 300ms ease-out; 
-    transition: all 300ms ease-out;
-  left: 0;
   height: 30px;
-  width: 200px;
-  display: block;
+  width: 100%; /*200px;*/
   bottom: -30px;
   line-height: 25pt;
-  text-align: center;
-}
-
-/* Simple Caption */
-.box .simple-caption {
-  
+  font-size: 10pt;
 }
 
 /* Simple Caption :hover Behavior */
-.box:hover .caption {
+.item:hover .caption {
   -moz-transform: translateY(-100%);
   -o-transform: translateY(-100%);
   -webkit-transform: translateY(-100%);
@@ -145,55 +103,16 @@ button:hover, button:active, button:focus {
 }
 </style>
 
-</head>
-<body>
-
-
-
-<!--script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=742522205838021&version=v2.1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script-->
-
-
-
-
-<!-- Image Caption 1 -->
-<div id="mainwrapper">
-    <div id="box-1" class="box">
-      <img id="image-1" src="http://demo.hongkiat.com/css3-image-captions/images/1.jpg"/>
-        <span class="caption simple-caption">
-          <p>Simple Caption</p>
-        </span>
-    </div>
-
-</div>
-
-
-
-
 <script>
-
-/*
-Steps for Using Facebook Login With the JavaScript SDK
-
-High-level steps to integrate Facebook Login into a web application:
-
-1. _Checking the login status_ to see if someone's already logged into your app. During this step, you also should check to see if someone has previously logged into your app, but is not currently logged in.
-2. If they are not logged in, _invoke the login dialog_ and ask for a set of data permissions.
-3. Verify their identity.
-4. Store the resulting access token.
-5. Make API calls.
-6. Log out.
-*/
+/* Facebook Login With the JavaScript SDK
+for integration into a web application */
 
   // This is called with the results from from FB.getLoginStatus().
+  // Handle the three possible cases of user's authorization state
   function statusChangeCallback(response) {
-    console.log('statusChangeCallback');
-    console.log(response);
+    //console.log('statusChangeCallback');
+    //console.log(response);
+    
     // The response object is returned with a status field that
     // lets the app know the current login status of the person.
     // Full docs on the response object can be found
@@ -204,53 +123,50 @@ High-level steps to integrate Facebook Login into a web application:
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
-        'into this app.';
+      'into this app.';
     } else {
       // The person is not logged into Facebook,
       // so we're not sure if they are logged into this app or not.
       document.getElementById('status').innerHTML = 'Please log ' +
-        'into Facebook.';
+      'into Facebook.';
     }
   }
 
-  // This function is called when someone finishes with the Login
-  // Button.  See the onlogin handler attached to it in the sample
-  // code below.
+  //
+  // Called when someone finishes with the Login Button.
+  //
   function checkLoginState() {
     FB.getLoginStatus(function(response) {
       statusChangeCallback(response);
     });
   }
 
+  // Initialize the JavaScript SDK
   window.fbAsyncInit = function() {
-  FB.init({
-    appId      : '742522205838021',
+    FB.init({
+      appId      : '742522205838021',
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
     version    : 'v2.1' // use version 2.1
   });
 
-  // Now that we've initialized the JavaScript SDK,
-  // we call FB.getLoginStatus(). 
-  // This function gets the state of the person visiting this page
-  // and can return one of 3 states to the callback you provide.
-  // They can be:
-  //
+
+  // Gets the state of the person visiting this page and
+  // return one of 3 states to the callback provided:
   // 1. Logged into your app ('connected')
   // 2. Logged into Facebook, but not your app ('not_authorized')
-  // 3. Not logged into Facebook and can't tell if they are logged into
+  // 3. Not logged into FB; can't tell if they are logged into
   //    your app or not.
-  //
-  // These three cases are handled in the callback function.
-
   FB.getLoginStatus(function(response) {
     statusChangeCallback(response);
   });
 
   };
 
+  //
   // Load the SDK asynchronously
+  //
   (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
@@ -260,10 +176,10 @@ High-level steps to integrate Facebook Login into a web application:
   }(document, 'script', 'facebook-jssdk'));
 
 
-
-
-  // Here we run a very simple test of the Graph API after login is
-  // successful.  See statusChangeCallback() for when this call is made.
+  //
+  // Simple test of the Graph API after login is successful.
+  // Called in statusChangeCallback().
+  //
   function testAPI() {
     //console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
@@ -274,317 +190,170 @@ High-level steps to integrate Facebook Login into a web application:
     });
   }
 
-
+//
+// Wrapper function for obtaining N tagged photos of FB user
+//
 function getPhotos() {
   FB.getLoginStatus(function(response) {
     if (response.status === 'connected') {
-/*
-    var container = document.querySelector('#container');
 
+      var N = document.getElementById('numPhotos').value;
 
+      // error check for negative N
+      // >0 is acceptable, no high cap / large number ok too
+      if(N <= 0) {
+        // change displayed value
+        document.getElementById('numPhotos').value = 1;
+        N = 1; // require minimum of 1
+        document.getElementById('photos').innerHTML = 'Please enter ' +
+        'a valid number (integer 1 or more).';
+      }
+      else {
+        // if they enter a decimal, change both the displayed value
+        // and the actual fed in parameter
 
-  var pckry = new Packery( container, {
-    itemSelector: '.item',
-    gutter: 10
-  });*/
+        // Note: this line redundant if they entered an integer...
+        document.getElementById('numPhotos').value = Math.floor(N);
 
-       // dynamically create item elements;
- // var fragment = document.createDocumentFragment();
- // fragment.appendChild(getFBPhotos(document.getElementById('numPhotos').value););
-  /*for ( var i = 0; i < 40; i++ ) {
-    var elem = makeItemElem();
-    fragment.appendChild( elem );
-  }*/
-
- // container.appendChild( fragment );
-
-      getFBPhotos(document.getElementById('numPhotos').value);
+        getFBPhotos(Math.floor(N));
+      }
     } 
     else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('photos').innerHTML = 'Please authorize ' +
-        'this app using the Facebook login button to pull recent photos.';
+      'this app using the Facebook login button to pull recent photos.';
     } else {
       document.getElementById('photos').innerHTML = 'Please log ' +
-        'into Facebook to pull recent photos.';
+      'into Facebook to pull recent photos.';
     }
   });
-  
 }
 
-
+//
+// Get the most recent N photos that user was tagged in on FB
+//
 function getFBPhotos(N) {
-
-  
-
-
-/*
-    var container = document.querySelector('#container');
-  // dynamically create item elements;
-  var fragment = document.createDocumentFragment();
-  for ( var i = 0; i < 40; i++ ) {
-    var elem = makeItemElem();
-    fragment.appendChild( elem );
-  }
-
-  var pckry = new Packery( container, {
-    itemSelector: '.item',
-    gutter: 10
-  });
-
-  container.appendChild( fragment );
-*/
   var i = 0;
-  var list = document.getElementById('photos');
-  list.innerHTML = ""; // clear the div in case it had photos in it already
+  var photoDisplay = document.getElementById('photos');
+  // clear the div in case it had photos in it already
+  photoDisplay.innerHTML = ""; 
 
-
-  /* make the API call */
-  //var allPhotos = FB.api(
+  /* make the API call
+    - me/photos: gets all photos user is tagged in
+    - me/photos/uploaded: gets all photos the user has uploaded
+    Both calls require permission of user_photos
+    which Facebook must approve if this app were actually deployed
+    */
     FB.api(
-    // this requires permission of user_photos
-    //which fb seems to be picky about
-    // like big red ugly flag like i'll do something illegal
-    //"/me/photos", // /uploaded
-    "/me/photos?limit="+N,
-    //"/me/photos/uploaded",
-    function (allPhotos) { //function (response) {
-      //console.log(response);
-      if (allPhotos && !allPhotos.error) { //if (response && !response.error) 
-        /* handle the result */
-        //console.log(response);
-        //allPhotos = response;
-        //console.log('allPhotos shoudl exist now maybe');
-        //console.log('allPhotos.data', allPhotos.data);
-        //console.log('allPhotos["data"]', allPhotos["data"]);
-
-        // if (allPhotos)
+      "/me/photos?limit="+N,
+      function (allPhotos) {
+        if (allPhotos && !allPhotos.error) { 
+        // will return an array of photos in response.data
         // if its not equal to null and has a size
-// shoudl be array of photos 
+        // shoudl be array of photos 
+        //if(allPhotos.data.length;)
+        if( (allPhotos.data.length == 0) || 
+          (allPhotos.data.length < N) ) {
+          if(allPhotos.data.length == 0) 
+            photoDisplay.innerHTML = "You aren't tagged in any photos!";
+          else
+            photoDisplay.innerHTML = "You don't have " + N + " photos tagged of you... Posting all existing photos."
+        }
+        else {
 
-      if( (allPhotos.data.length == 0) || (allPhotos.data.length < N) ) {
-        if(allPhotos.data.length == 0) 
-          list.innerHTML = "You aren't tagged in any photos!";
-        else
-          list.innerHTML = "You don't have " + N + " photos tagged of you... Posting all existing photos."
-      }
-
-      else {
-
-
-
-  //if(allPhotos.data.length;)
-
-// https://developers.facebook.com/docs/graph-api/reference/v2.2/photo
-// backdated_time is when it was taken
-// but it doesnt always exist!! 
-  // sort descending by "created_time"
-  // which is when they were published
-  // in order to find most recent
+  // Sort array of photos based on their created datetime
+  // (most recent first)
   allPhotos["data"].sort(
     function(a, b) { 
-      //console.log("a.created_time.getTime()", a.created_time.getTime(), " b.created_time.getTime()", b.created_time.getTime());
-      return new Date(b.created_time).getTime() - new Date(a.created_time).getTime(); 
-    });
+// https://developers.facebook.com/docs/graph-api/reference/v2.2/photo  
+    // backdated_time is when a photo was taken
+    // but that property doesnt always exist, so
+    // sort descending by "created_time" (when they were published)
+    // in order to find most recent pictures
+    return new Date(b.created_time).getTime() - new Date(a.created_time).getTime(); 
+  });
 
-  // counter for adding visual interest by alternating masonry
-  // of the images based on orientation/layout/dimensions
-  //  var portraitCount = 0;
-  //  var landscapeCount = 0;
-
-
+        // create item elements and add them to the page
         for(i = 0; i<allPhotos.data.length; i++) {
-
           //var photo = allPhotos.data[i]; //pic
-
-          // Append to the list/"brick wall" of photos fit together
-          // lets call t hem units? idk
-          //list.appendChild(imgDiv);
-
-          list.appendChild(makePictureBrick(allPhotos.data[i]));
-
+          // Append to the list/"brick wall" of photos displayed
+          photoDisplay.appendChild(makePictureBrick(allPhotos.data[i]));
         }
       }
     }
-}
-);
+  }
+  );
 
 
 }
 
-
-
-
-
-// makePictureBrick makePictureBlock createImageUnit createPHotoUnit
-// makePictureUnit
+// Create HTML element for the picture/photo
+// "brick"/"block"/"unit"... whatever you want to call it
 function makePictureBrick(photo) {
 
   var imgDiv = document.createElement('div');
   imgDiv.className="item";
+  //imgDiv.maxWidth =
 
   var pic = document.createElement('img');
   pic.src = photo.source;
-  pic.height = photo.height / 2;
-  //pic.width = photo.width;
 
+  // if you change it in css image shrinks not div, leaving space
+  //pic.height = photo.height / 2;
+  pic.width = photo.width / 2;
 
-  // Date/time this photo was published on FB
-  var imgDate = new Date(photo.created_time); 
-  //var content = document.createTextNode(imgDate.toDateString());
-  //imgDiv.appendChild(content);
-  // .............
-  imgDiv.innerHTML = "<small>"+imgDate.toDateString() + "</small><br>";
-         
-          //imgDiv.maxWidth =
-  
+  // Caption on hover = Date this photo was published on FB
+  var imgDate = new Date(photo.created_time);
+  //var imgCaption = document.createTextNode(imgDate.toDateString());
+  var imgCaption = document.createElement('span');
+  imgCaption.className = "caption";
+  imgCaption.innerHTML = imgDate.toDateString();
+  imgDiv.appendChild(imgCaption); //dateCaption
   imgDiv.appendChild(pic);
   
   return imgDiv;
-         
-
-          //imgDiv.style.backgroundImage = photo.source;         
-//imgDiv.width = photo.width / 4;
-         /*
-          // Determine picture dimensions for visual interest
-
-          // Portrait/vertical orientation picture
-          if(pic.height > pic.width) {
-            //pic.height = photo.height / 2.5; // 4
-            if (portraitCount % 2) pic.height = 200;
-            else pic.height = 400;
-            portraitCount++;
-          }
-          // Horizontal/Landscape orientation picture (or square)
-          else {
-            if (landscapeCount % 2 && (!portraitCount % 2)) pic.height = 100;
-            else pic.height = 200;
-            landscapeCount++;
-          }*/ 
 }
 
 </script>
 
-<!--
-  Below we include the Login Button social plugin.
-  This button uses the JavaScript SDK to present
-  a graphical Login button that triggers
-  the FB.login() function when clicked.
--->
+
+</head>
+<body>
 
 <div id="fb-root"></div>
-<!--div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="true">Log in</div-->
 
-
+<!--
+  The Login Button social plugin:
+  uses the JavaScript SDK to present a graphical button
+  that triggers FB.login() when clicked.
+-->
+<header>
 <fb:login-button scope="public_profile,user_photos" onlogin="checkLoginState();" data-size="large" data-auto-logout-link="true">
 </fb:login-button>
 
 <span id="status"></span>
 
-<br><br>
-Number of most recent photos to pull from Facebook: 
+<!--br><br-->
+<p>Number of most recent photos to pull from Facebook: 
 <input type="number" id="numPhotos" min="1" max="25" value="6">
-<br><br>
+</p>
+<!--br><br-->
 
 <!-- should only show this button if already logged in -->
 <button id="photobtn" onclick="getPhotos()">Get Photos!</button>
 
-
-<div id="photos" class="masonry js-masonry"></div>
-
-<div id="container"></div>
-
+</header>
+<div id="photos"></div>
 
 <script src="http://packery.metafizzy.co/packery.pkgd.min.js"></script>
-<script src="http://masonry.desandro.com/masonry.pkgd.js"></script>
+
 <script>
 var container = document.querySelector('#photos');
 var pckry = new Packery( container, {
   itemSelector: '.item',
   gutter: 0
 });
-
-
-
-//<div id="photos" class="masonry js-masonry"  data-masonry-options='{ "columnWidth": 60 }'></div>
-
-/*
-var container = document.querySelector('#photos');
-var msnry = new Masonry( container, {
-  columnWidth: 200,
-  itemSelector: '.item'
-});
-*/
-
-
-/*
-var container = document.querySelector('#container');
-
-
-
-  var pckry = new Packery( container, {
-    itemSelector: '.item',
-    gutter: 10
-  });*/
-// packery and imagesloaded added as external resources
-/*
-docReady( function() {
-
-  var container = document.querySelector('#container');
-  // dynamically create item elements;
-  var fragment = document.createDocumentFragment();
-  for ( var i = 0; i < 40; i++ ) {
-    var elem = makeItemElem();
-    fragment.appendChild( elem );
-  }
-
-  var pckry = new Packery( container, {
-    itemSelector: '.item',
-    gutter: 10
-  });
-
-  container.appendChild( fragment );
-
-  // for each loaded image...
-  var imgLoad = imagesLoaded( container );
-  imgLoad.on( 'progress', function( imgLoad, image ) {
-    if ( !image.isLoaded ) {
-      return;
-    }
-    // un-hide item and lay out
-    var itemElem = image.img.parentNode;
-    classie.remove( itemElem, 'is-hidden' );
-    pckry.appended( itemElem );
-  });
-
-});
-
-
-
-// create <div class="item"><img /></div>
-function makeItemElem() {
-  var item = document.createElement('div');
-  item.className = 'item is-hidden';
-  var img = document.createElement('img');
-  // random image size
-  var width = Math.floor( Math.random() * 200 ) + 50;
-  var height = Math.floor( Math.random() * 200 ) + 50;
-  img.src = 'http://lorempixel.com/' + width + '/' + height;
-  item.appendChild( img );
-  return item;
-
-
-  var item = document.createElement('div');
-  item.className = 'item is-hidden';
-  var img = document.createElement('img');
-}*/
-
 </script>
-
-
 
 </body>
 </html>
-
-
-

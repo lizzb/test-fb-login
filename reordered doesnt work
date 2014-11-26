@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Facebook Login JavaScript Example</title>
+<meta charset="UTF-8">
+
+<style>
+* {
+  margin: auto;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
+  
+}
+
+header {padding: 10px;}
+
+#status { 
+  padding-left: 10px;
+  font-style: italic;
+  font-size: 12pt;
+}
+
+
+button {
+display: block;
+padding: 12px 10px;
+border: 2px solid #4F8EF7;
+border-radius: 4px;
+background-color: white;
+opacity: 0.7;
+color: #4F8EF7;
+width: 196px;
+transition: opacity 0.1s ease-in-out 0s;
+font: normal normal bold normal 22px/33px  'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+button:hover, button:active, button:focus {
+  text-decoration: underline;
+  background: #4F8EF7;
+  color: white;
+  opacity: 1;
+}
+
+#photos {clear: both;}
+
+
+
+/* Image Box Style */
+.item { 
+  float: left; 
+
+  border: 5px solid #fff;
+  position: relative;
+  overflow: hidden;
+    -webkit-box-shadow: 1px 1px 1px 1px #ccc;
+    -moz-box-shadow: 1px 1px 1px 1px #ccc;
+    box-shadow: 1px 1px 1px 1px #ccc;
+
+}
+.item img { 
+  display: block;
+}
+
+/*.item img, */.item .caption {
+  display: block;
+  position: absolute;
+  left: 0;
+   -webkit-transition: all 300ms ease-out;
+    -moz-transition: all 300ms ease-out;
+    -o-transition: all 300ms ease-out;
+    -ms-transition: all 300ms ease-out; 
+  transition: all 300ms ease-out;
+}
+
+
+/* Caption Common Style - 
+caption as an tag is not always consistent across browsers, 
+hence using a class */
+caption, .item .caption {
+  background-color: rgba(0,0,0,0.8);
+ 
+  color: #fff;
+  z-index: 100;
+    -webkit-transition: all 300ms ease-out;
+    -moz-transition: all 300ms ease-out;
+    -o-transition: all 300ms ease-out;
+    -ms-transition: all 300ms ease-out; 
+    transition: all 300ms ease-out;
+  
+  height: 30px;
+  width: 100%; /*200px;*/
+  
+  bottom: -30px;
+  line-height: 25pt;
+  text-align: center;
+}
+
+
+/* Simple Caption :hover Behavior */
+.item:hover .caption {
+  -moz-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  -webkit-transform: translateY(-100%);
+  opacity: 1;
+  transform: translateY(-100%);
+}
+</style>
+
+</head>
+<body>
+
+<div id="fb-root"></div>
+
+<!--
+  Login Button social plugin.
+  This button uses the JavaScript SDK to present
+  a graphical Login button that triggers
+  the FB.login() function when clicked.
+-->
+<header>
+<fb:login-button scope="public_profile,user_photos" onlogin="checkLoginState();" data-size="large" data-auto-logout-link="true">
+</fb:login-button>
+
+<span id="status"></span>
+
+<br><br>
+Number of most recent photos to pull from Facebook: 
+<input type="number" id="numPhotos" min="1" max="25" value="6">
+<br><br>
+
+<!-- should only show this button if already logged in -->
+<button id="photobtn" onclick="getPhotos()">Get Photos!</button>
+
+</header>
+<div id="photos"></div>
+
+
+
+
+<script src="http://packery.metafizzy.co/packery.pkgd.min.js"></script>
+
+<script>
+var container = document.querySelector('#photos');
+var pckry = new Packery( container, {
+  itemSelector: '.item',
+  gutter: 0
+});
+</script>
+
+
+
+
+
+
+<script>
+/*
+Facebook Login With the JavaScript SDK
+for integration into a web application
+*/
+
+  // Initialize the JavaScript SDK
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '742522205838021',
+    cookie     : true,  // enable cookies to allow the server to access 
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.1' // use version 2.1
+  });
+
+
+
+
+
+
+  // Called with the results from from FB.getLoginStatus().
+  // Handle the 3 possible cases of user's authorization state
+  // 1. Logged into your app ('connected')
+  // 2. Logged into Facebook, but not your app ('not_authorized')
+  // 3. Not logged into FB; can't tell if they are logged into
+  //    your app or not.
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that
+    // lets the app know the current login status of the person.
+    // Full docs on the response object can be found
+    // in the documentation for FB.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    } else {
+      // The person is not logged into Facebook,
+      // so we're not sure if they are logged into this app or not.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into Facebook.';
+    }
+  }
+
+  // Called when someone finishes with the Login Button.
+  function checkLoginState() {
+    // Gets the state of the person visiting this page and
+    // return one of three states to the callback provided:
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+  
+  }; // end window.fbAsyncInit
+
+
+
+
+
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function testAPI() {
+    //console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Successful login for: ' + response.name);
+      //document.getElementById('status').innerHTML =
+      //  'Thanks for logging in, ' + response.name + '!';
+      document.getElementById('status').innerHTML = 'Logged in as: ' + response.name;
+    });
+  }
+
+
+function getPhotos() {
+  FB.getLoginStatus(function(response) {
+    if (response.status === 'connected') {
+      getFBPhotos(document.getElementById('numPhotos').value);
+    } 
+    else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+      document.getElementById('photos').innerHTML = 'Please authorize ' +
+        'this app using the Facebook login button to pull recent photos.';
+    } else {
+      document.getElementById('photos').innerHTML = 'Please log ' +
+        'into Facebook to pull recent photos.';
+    }
+  });
+  
+}
+
+
+function getFBPhotos(N) {
+
+ 
+
+  var i = 0;
+  var list = document.getElementById('photos');
+  list.innerHTML = ""; // clear the div in case it had photos in it already
+
+
+  /* make the API call - me/photos gets all photos user is tagged in */
+    FB.api(
+    // this requires permission of user_photos
+    // which fb seems to be picky about
+    
+    //"/me/photos", // /uploaded
+    "/me/photos?limit="+N,
+    //"/me/photos/uploaded",
+    function (allPhotos) {
+      if (allPhotos && !allPhotos.error) { 
+
+        // if its not equal to null and has a size
+        // shoudl be array of photos 
+
+      if( (allPhotos.data.length == 0) || (allPhotos.data.length < N) ) {
+        if(allPhotos.data.length == 0) 
+          list.innerHTML = "You aren't tagged in any photos!";
+        else
+          list.innerHTML = "You don't have " + N + " photos tagged of you... Posting all existing photos."
+      }
+
+      else {
+  //if(allPhotos.data.length;)
+
+// https://developers.facebook.com/docs/graph-api/reference/v2.2/photo
+// backdated_time is when it was taken
+// but it doesnt always exist!! 
+  // sort descending by "created_time"
+  // which is when they were published
+  // in order to find most recent
+
+  allPhotos["data"].sort(
+    function(a, b) { 
+      return new Date(b.created_time).getTime() - new Date(a.created_time).getTime(); 
+    });
+
+        for(i = 0; i<allPhotos.data.length; i++) {
+
+          //var photo = allPhotos.data[i]; //pic
+
+            // dynamically create item elements;
+
+          // Append to the list/"brick wall" of photos fit together
+          // lets call t hem units? idk
+          list.appendChild(makePictureBrick(allPhotos.data[i]));
+
+        }
+      }
+    }
+}
+);
+
+
+}
+
+
+
+
+
+// makePictureBrick makePictureBlock createImageUnit createPHotoUnit
+// makePictureUnit
+function makePictureBrick(photo) {
+
+  var imgDiv = document.createElement('div');
+  imgDiv.className="item";
+  //imgDiv.maxWidth =
+
+  var pic = document.createElement('img');
+  pic.src = photo.source;
+  pic.height = photo.height / 2;
+  //pic.width = photo.width / 2;
+
+
+  // Date/time this photo was published on FB
+  var imgDate = new Date(photo.created_time);
+  //var imgCaption = document.createTextNode(imgDate.toDateString());
+  var imgCaption = document.createElement('span');
+  imgCaption.className = "caption";
+  imgCaption.innerHTML = imgDate.toDateString();
+  imgDiv.appendChild(imgCaption); //dateCaption
+  // .............
+  //imgDiv.innerHTML = "<small>"+imgDate.toDateString() + "</small><br>";
+  //var dateCaption = document.createElement('span');
+  //dateCaption.className = "caption";
+  //dateCaption.innerHTML = imgDate.toDateString();
+
+  
+
+
+  imgDiv.appendChild(pic);
+  
+  return imgDiv;
+}
+
+</script>
+
+
+
+
+
+</body>
+</html>
+
+
+
