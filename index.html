@@ -64,6 +64,9 @@ centered */
   display: block;
 }
 
+img .vert {}
+img .horiz {}
+
 /*.item img, */
 .item .caption {
   display: block;
@@ -302,6 +305,12 @@ function makePictureBrick(photo) {
   //pic.height = photo.height / 2;
   pic.width = photo.width / 2;
 
+  // Determine whether picture is portrait or landscape orientation
+  // Landscape default
+  pic.className = pic.className = "horiz"; // horizontal
+  // othewise Portrait or square
+  if(photo.width < photo.height) pic.className = "vert"; // vertical
+  
   // Caption on hover = Date this photo was published on FB
   var imgDate = new Date(photo.created_time);
   //var imgCaption = document.createTextNode(imgDate.toDateString());
