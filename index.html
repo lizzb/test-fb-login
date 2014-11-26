@@ -323,30 +323,28 @@ function makePictureBrick(photo) {
 <div id="fb-root"></div>
 
 <!--
-  The Login Button social plugin:
-  uses the JavaScript SDK to present a graphical button
-  that triggers FB.login() when clicked.
+  The Login Button social plugin uses the JavaScript SDK to 
+  present a graphical button that triggers FB.login() when clicked.
 -->
 <header>
-<fb:login-button scope="public_profile,user_photos" onlogin="checkLoginState();" data-size="large" data-auto-logout-link="true">
-</fb:login-button>
+    <fb:login-button scope="public_profile,user_photos" onlogin="checkLoginState();" data-size="large" data-auto-logout-link="true">
+    </fb:login-button>
 
-<span id="status"></span>
+    <span id="status"></span>
 
-<!--br><br-->
-<p>Number of most recent photos to pull from Facebook: 
-<input type="number" id="numPhotos" min="1" max="25" value="6">
-</p>
-<!--br><br-->
+    <p>Number of most recent photos to pull from Facebook:
+        <input type="number" id="numPhotos" min="1" max="25" value="6">
+    </p>
 
-<!-- should only show this button if already logged in -->
-<button id="photobtn" onclick="getPhotos()">Get Photos!</button>
+    <!-- should really only show this button if already logged in -->
+    <button id="photobtn" onclick="getPhotos()">Get Photos!</button>
 
 </header>
+
 <div id="photos"></div>
 
+<!-- Packery plugin for bin-packing layout --> 
 <script src="http://packery.metafizzy.co/packery.pkgd.min.js"></script>
-
 <script>
 var container = document.querySelector('#photos');
 var pckry = new Packery( container, {
